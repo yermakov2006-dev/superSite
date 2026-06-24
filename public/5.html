@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>FRONTEND // glass guide</title>
+<link rel="stylesheet" href="output.css"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #e0e0e0;
+  line-height: 1.6;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* animated bg orbs */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+body::before {
+  width: 500px; height: 500px;
+  background: #ff6ec7;
+  top: -100px; left: -100px;
+  animation: float 12s ease-in-out infinite alternate;
+}
+body::after {
+  width: 400px; height: 400px;
+  background: #00d4ff;
+  bottom: -100px; right: -100px;
+  animation: float 10s ease-in-out infinite alternate-reverse;
+}
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(60px, 40px) scale(1.15); }
+}
+
+/* ─── NAV ─── */
+.glass-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 12, 41, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.glass-nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.glass-nav-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #ff6ec7, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.burger-glass {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 22px;
+  padding: 4px 12px 6px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background .2s;
+}
+
+.burger-glass:hover { background: rgba(255,255,255,0.15); }
+
+/* ─── SIDE MENU ─── */
+.side-glass {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
+  z-index: 200;
+  background: rgba(20, 16, 50, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255,255,255,0.08);
+  padding: 28px 24px;
+  overflow-y: auto;
+  transition: right .35s cubic-bezier(.4,0,.2,1);
+}
+
+.side-glass.open { right: 0; }
+
+.side-glass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.side-glass-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.35);
+}
+
+.close-glass {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 18px;
+  padding: 2px 10px 4px;
+  cursor: pointer;
+}
+
+.side-glass-nav { list-style: none; }
+
+.side-glass-nav li { border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+.side-glass-nav a {
+  display: block;
+  padding: 14px 0;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color .2s;
+}
+
+.side-glass-nav a:hover { color: #ff6ec7; }
+
+.side-glass-nav small {
+  display: block;
+  font-weight: 400;
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 1px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── OVERLAY ─── */
+.overlay-glass {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s;
+}
+
+.overlay-glass.show { opacity: 1; pointer-events: auto; }
+
+/* ─── GLASS CARD ─── */
+.glass {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+}
+
+.glass-shifted {
+  margin-left: 16px;
+}
+
+@media (max-width: 600px) {
+  .glass-shifted { margin-left: 0; }
+  .glass { padding: 24px 20px; border-radius: 12px; }
+}
+
+/* ─── HERO ─── */
+.hero-glass {
+  padding: 56px 40px;
+  margin: 24px 0 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glass::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(255, 110, 199, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #ff6ec7 0%, #00d4ff 50%, #ff6ec7 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradShift 4s ease infinite;
+}
+
+@keyframes gradShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ─── SECTION TAG ─── */
+.sec-tag {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,110,199,0.5);
+  margin-bottom: 8px;
+}
+
+.sec-title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.sec-title small {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.35);
+  margin-top: 6px;
+  letter-spacing: 0;
+}
+
+/* ─── STATS GRID ─── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-item {
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: background .2s, border-color .2s;
+}
+
+.stat-item:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255, 110, 199, 0.2);
+}
+
+.stat-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff, #c0b8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 4px;
+}
+
+/* ─── SALARY TABLE ─── */
+.salary-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 12px; }
+.salary-table th {
+  text-align: left;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.3);
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.salary-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.salary-table tr:last-child td { border-bottom: none; }
+.salary-bar-wrap { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.salary-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #ff6ec7, #00d4ff); }
+
+/* ─── DUTY CARDS ─── */
+.duty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.duty-card {
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  transition: all .25s;
+}
+.duty-card:hover {
+  border-color: rgba(255,110,199,0.2);
+  transform: translateY(-2px);
+}
+.duty-card.accent {
+  background: linear-gradient(135deg, rgba(255,110,199,0.08), rgba(0,212,255,0.08));
+  border-color: rgba(255,255,255,0.1);
+}
+.duty-card.accent:hover { border-color: rgba(0,212,255,0.25); }
+
+.duty-num {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+
+.duty-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+.duty-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+
+/* ─── TECH STACK ─── */
+.tech-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.tech-col {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+}
+.tech-col h3 {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255,110,199,0.5);
+  margin-bottom: 14px;
+}
+.tech-col ul { list-style: none; }
+.tech-col li {
+  font-size: 13px;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.65);
+}
+.tech-col li:last-child { border-bottom: none; }
+.tech-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+.tech-dot.filled { background: #00d4ff; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+
+/* ─── CAREER LIST ─── */
+.career-list { list-style: none; }
+.career-list li {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+}
+.career-list li:last-child { border-bottom: none; }
+.career-marker {
+  font-weight: 700;
+  color: #ff6ec7;
+  flex-shrink: 0;
+  min-width: 60px;
+}
+
+/* ─── TRENDS ─── */
+.trend-list { list-style: none; }
+.trend-list li {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+}
+.trend-list li:last-child { border-bottom: none; }
+.trend-label { font-weight: 600; color: #00d4ff; flex-shrink: 0; min-width: 120px; }
+
+/* ─── FAQ ─── */
+.faq-item {
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+.faq-summary {
+  padding: 14px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+.faq-summary::-webkit-details-marker { display: none; }
+.faq-summary::after { content: '+'; font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.2); }
+.faq-item[open] .faq-summary::after { content: '−'; }
+.faq-body {
+  padding: 0 18px 14px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+}
+
+/* ─── RESOURCES ─── */
+.resource-glass {
+  display: block;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  background: rgba(255,255,255,0.02);
+  transition: all .2s;
+}
+.resource-glass:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,110,199,0.2);
+  transform: translateX(4px);
+}
+.resource-glass small {
+  display: block;
+  font-weight: 400;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 2px;
+}
+
+/* ─── QUOTE ─── */
+.quote-glass {
+  padding: 40px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255,110,199,0.06), rgba(0,212,255,0.06));
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.quote-glass blockquote {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: -0.01em;
+}
+.quote-glass cite {
+  display: block;
+  margin-top: 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.25);
+  font-style: normal;
+}
+
+/* ─── DIVIDER ─── */
+.divider-glass {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,110,199,0.2), rgba(0,212,255,0.2), transparent);
+  margin: 24px 0;
+  border: none;
+}
+
+/* ─── FOOTER ─── */
+.footer-glass {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 28px 0;
+  margin-top: 32px;
+  margin-bottom: 40px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.2);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 750px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  .duty-grid { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .hero-glass { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <div class="glass-nav-inner">
+    <span class="glass-nav-title">✦ FRONTEND GUIDE</span>
+    <button class="burger-glass" id="burgerGlass">☰</button>
+  </div>
+</nav>
+
+<div class="side-glass" id="sideGlass">
+  <div class="side-glass-header">
+    <span class="side-glass-title">Навигация</span>
+    <button class="close-glass" id="closeGlass">✕</button>
+  </div>
+  <ul class="side-glass-nav">
+    <li><a href="#intro-glass">Введение<small>Кто это?</small></a></li>
+    <li><a href="#market-glass">Цифры<small>Рынок</small></a></li>
+    <li><a href="#salary-glass">Зарплаты<small>По грейдам</small></a></li>
+    <li><a href="#duties-glass">Обязанности<small>Что делает</small></a></li>
+    <li><a href="#stack-glass">Стек<small>Технологии</small></a></li>
+    <li><a href="#career-glass">Карьера<small>Путь</small></a></li>
+    <li><a href="#trends-glass">Тренды<small>Куда движется</small></a></li>
+    <li><a href="#faq-glass">Мифы<small>FAQ</small></a></li>
+    <li><a href="#resources-glass">Ресурсы<small>Что читать</small></a></li>
+  </ul>
+</div>
+
+<div class="overlay-glass" id="overlayGlass"></div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="glass hero-glass">
+    <p class="hero-label">✦ Гайд по профессии</p>
+    <h1 class="hero-title">FRONTEND<br/>РАЗРАБОТЧИК</h1>
+    <p class="hero-desc">Инженер интерфейсов. Строит то, что вы видите в браузере. Не путать с верстальщиком.</p>
+  </div>
+
+  <!-- ВВЕДЕНИЕ -->
+  <section class="glass glass-shifted" id="intro-glass">
+    <p class="sec-tag">001 / Введение</p>
+    <h2 class="sec-title">Кто это?<small>Определение и границы ответственности</small></h2>
+    <div class="text-base" style="color:rgba(255,255,255,0.55);max-width:680px;">
+      <p style="margin-bottom:12px;"><strong style="color:#fff;">Frontend-разработчик</strong> — специалист, который реализует пользовательский интерфейс веб-приложения. Он берёт дизайн-макет и превращает его в код, работающий в браузере. В зону ответственности входит: вёрстка, логика интерфейса, работа с данными от сервера, оптимизация загрузки, обеспечение доступности (a11y) и кросс-браузерной совместимости.</p>
+      <p>В отличие от <strong style="color:#fff;">верстальщика</strong> (который только раскладывает блоки по сетке), фронтенд-разработчик пишет полноценную клиентскую логику: управляет состоянием приложения, обрабатывает пользовательские сценарии, работает с API, настраивает сборку и деплой.</p>
+    </div>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- ЦИФРЫ -->
+  <section class="glass" id="market-glass">
+    <p class="sec-tag">002 / Рынок</p>
+    <h2 class="sec-title">Цифры и факты<small>Чтобы понимать масштаб</small></h2>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <p class="stat-label">Вакансий на hh.ru</p>
+        <p class="stat-value">~12 000</p>
+        <p class="stat-note">Ежемесячно открытых позиций (2025–2026)</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-label">Медианная зарплата</p>
+        <p class="stat-value">220 000 ₽</p>
+        <p class="stat-note">Middle+ / Senior, Москва (Хабр Карьера)</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-label">React используют</p>
+        <p class="stat-value">82%</p>
+        <p class="stat-note">Опрошенных (State of JS 2024)</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-label">До Middle</p>
+        <p class="stat-value">~3.5 года</p>
+        <p class="stat-note">Среднее время роста</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- ЗАРПЛАТЫ -->
+  <section class="glass glass-shifted" id="salary-glass">
+    <p class="sec-tag">002 / Компенсация</p>
+    <h2 class="sec-title">Зарплаты по грейдам<small>Москва, ₽, медиана 2025</small></h2>
+    <div class="overflow-x-auto">
+      <table class="salary-table">
+        <thead>
+          <tr><th>Уровень</th><th>Медиана</th><th>Вилка</th><th>Рынок</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:#fff;font-weight:600;">Junior</td><td>90 000</td><td>60–120k</td><td><div class="salary-bar-wrap"><div class="salary-bar-fill" style="width:20%"></div></div></td></tr>
+          <tr><td style="color:#fff;font-weight:600;">Middle</td><td>220 000</td><td>150–300k</td><td><div class="salary-bar-wrap"><div class="salary-bar-fill" style="width:55%"></div></div></td></tr>
+          <tr><td style="color:#fff;font-weight:600;">Senior</td><td>400 000</td><td>300–600k</td><td><div class="salary-bar-wrap"><div class="salary-bar-fill" style="width:85%"></div></div></td></tr>
+          <tr><td style="color:#fff;font-weight:600;">Lead</td><td>550 000</td><td>400–700k+</td><td><div class="salary-bar-wrap"><div class="salary-bar-fill" style="width:100%"></div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- ОБЯЗАННОСТИ -->
+  <section class="glass" id="duties-glass">
+    <p class="sec-tag">003 / Обязанности</p>
+    <h2 class="sec-title">Что реально делает?<small>Не «пишет код», а решает проблемы</small></h2>
+    <div class="duty-grid">
+      <div class="duty-card">
+        <p class="duty-num">01</p>
+        <h3>Строит интерфейсы</h3>
+        <p>Собирает приложение из компонентов. Управляет состоянием (Redux, Zustand, Pinia или signals). Настраивает роутинг. Мемоизация, виртуализация списков, оптимизация ре-рендеров.</p>
+      </div>
+      <div class="duty-card accent">
+        <p class="duty-num">02</p>
+        <h3>Работает с данными</h3>
+        <p>Ходит в API (REST / GraphQL), кеширует ответы (React Query / SWR / Apollo), обновляет через WebSocket или SSE. Обрабатывает ошибки, ретраи, optimistic updates.</p>
+      </div>
+      <div class="duty-card accent">
+        <p class="duty-num">03</p>
+        <h3>Оптимизирует</h3>
+        <p>Следит за Core Web Vitals: LCP, CLS, INP. Дробит бандл через code splitting, ленивая загрузка, WebP/AVIF, Service Worker кеширование.</p>
+      </div>
+      <div class="duty-card">
+        <p class="duty-num">04</p>
+        <h3>Обеспечивает качество</h3>
+        <p>Тесты: Vitest, Testing Library, Playwright. Линтеры, code review, доступность: семантика, aria, клавиатура, WCAG 2.1 AA.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- СТЕК -->
+  <section class="glass glass-shifted" id="stack-glass">
+    <p class="sec-tag">004 / Стек</p>
+    <h2 class="sec-title">Технологии<small>Языки, фреймворки, инструменты</small></h2>
+    <div class="tech-grid">
+      <div class="tech-col">
+        <h3>Языки</h3>
+        <ul>
+          <li><span class="tech-dot filled"></span>JavaScript (ES2024+)</li>
+          <li><span class="tech-dot filled"></span>TypeScript (стандарт)</li>
+          <li><span class="tech-dot"></span>HTML5 (семантика, a11y)</li>
+          <li><span class="tech-dot filled"></span>CSS3 (Grid, Container Queries)</li>
+        </ul>
+      </div>
+      <div class="tech-col">
+        <h3>Фреймворки</h3>
+        <ul>
+          <li><span class="tech-dot filled"></span>React 19 + Next.js / Remix</li>
+          <li><span class="tech-dot filled"></span>Vue 3 + Nuxt</li>
+          <li><span class="tech-dot"></span>Angular 17+</li>
+          <li><span class="tech-dot filled"></span>Svelte 5 + SvelteKit</li>
+        </ul>
+      </div>
+      <div class="tech-col">
+        <h3>Инфраструктура</h3>
+        <ul>
+          <li><span class="tech-dot filled"></span>Vite (стандарт сборки)</li>
+          <li><span class="tech-dot"></span>Tailwind CSS</li>
+          <li><span class="tech-dot filled"></span>ESLint + Prettier</li>
+          <li><span class="tech-dot filled"></span>Husky + lint-staged</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- КАРЬЕРА -->
+  <section class="glass" id="career-glass">
+    <p class="sec-tag">005 / Карьера</p>
+    <h2 class="sec-title">Путь в профессии<small>От джуна до лида — что меняется</small></h2>
+    <ul class="career-list">
+      <li><span class="career-marker">Junior</span><span>Вёрстка по Figma, простые компоненты, основы JS и один фреймворк. Нужен код-ревью. 0–1.5 года. 60–120k.</span></li>
+      <li><span class="career-marker">Middle</span><span>Уверенный фреймворк, сборка, тесты, ревью. Понимает SSR vs SPA vs SSG. 1.5–5 лет. 150–300k.</span></li>
+      <li><span class="career-marker">Senior</span><span>Архитектура, выбор стека, performance. Участвует в планировании. Знает бэкенд. 5+ лет. 300–600k+.</span></li>
+      <li><span class="career-marker">Lead</span><span>Управляет командой, нанимает, онбордит, процессы. Код редко — в основном ревью и прототипы.</span></li>
+    </ul>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- ТРЕНДЫ -->
+  <section class="glass glass-shifted" id="trends-glass">
+    <p class="sec-tag">006 / Тренды</p>
+    <h2 class="sec-title">Что прямо сейчас<small>Куда движется индустрия</small></h2>
+    <ul class="trend-list">
+      <li><span class="trend-label">Server Components</span><span>React Server Components (RSC): часть компонентов рендерится на сервере без отправки JS на клиент. Меньше бандла, быстрее загрузка.</span></li>
+      <li><span class="trend-label">AI в интерфейсе</span><span>Чат-интерфейсы, AI-автодополнение, генерация UI по промпту. Stream через SSE — стандартный паттерн.</span></li>
+      <li><span class="trend-label">WebGPU</span><span>API для вычислений на GPU в браузере. 3D-графика, симуляции, ML-инференс на клиенте.</span></li>
+      <li><span class="trend-label">Меньше JS</span><span>Island architecture (Astro), partial hydration (Qwik), компилируемые фреймворки (Svelte, Solid).</span></li>
+    </ul>
+    <p style="font-size:12px;color:rgba(255,255,255,0.2);border-top:1px solid rgba(255,255,255,0.04);padding-top:12px;margin-top:8px;"><strong style="color:rgba(255,255,255,0.3);">Источники:</strong> State of JS 2024, HTTP Archive, Web Almanac, JetBrains.</p>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- FAQ -->
+  <section class="glass" id="faq-glass">
+    <p class="sec-tag">007 / Мифы и FAQ</p>
+    <h2 class="sec-title">Чего не надо говорить<small>Популярные заблуждения и ответы</small></h2>
+    <details class="faq-item" open>
+      <summary class="faq-summary">«Фронтенд — это же просто вёрстка»</summary>
+      <div class="faq-body">Фронтенд включает управление состоянием, оптимизацию производительности, тестирование, CI/CD. Вёрстка — 20–30% работы.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-summary">«Можно без математики»</summary>
+      <div class="faq-body">Анимации, алгоритмы поиска/фильтрации, O(n), canvas, WebGL — математика нужна регулярно.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-summary">«Все фреймворки — одно и то же»</summary>
+      <div class="faq-body">React — библиотека без мнения. Vue — фреймворк с магией. Svelte — компилятор. Solid — без виртуального DOM.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-summary">«Достаточно знать React»</summary>
+      <div class="faq-body">React — инструмент. Без DOM, HTTP, accessibility, бандлинга — вы просто пользователь API.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-summary">«AI скоро заменит фронтендеров»</summary>
+      <div class="faq-body">AI ускоряет код, но не архитектуру, не компромиссы, не пользовательский опыт. Чем сложнее — тем нужнее человек.</div>
+    </details>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- РЕСУРСЫ -->
+  <section class="glass glass-shifted" id="resources-glass">
+    <p class="sec-tag">008 / Ресурсы</p>
+    <h2 class="sec-title">Что читать и смотреть<small>Проверенные источники для роста</small></h2>
+    <a class="resource-glass" href="https://developer.mozilla.org" target="_blank">MDN Web Docs<small>Главная документация — читать каждый день</small></a>
+    <a class="resource-glass" href="https://roadmap.sh/frontend" target="_blank">roadmap.sh / frontend<small>Визуальная карта технологий от джуна до сеньора</small></a>
+    <a class="resource-glass" href="https://web.dev" target="_blank">web.dev<small>Core Web Vitals и производительность от Google</small></a>
+    <a class="resource-glass" href="https://kentcdodds.com" target="_blank">Kent C. Dodds<small>React, Testing, Epic React</small></a>
+    <a class="resource-glass" href="https://www.joshwcomeau.com" target="_blank">Josh W. Comeau<small>CSS, React, анимации — глубокие разборы</small></a>
+  </section>
+
+  <hr class="divider-glass"/>
+
+  <!-- ЦИТАТА -->
+  <div class="quote-glass">
+    <blockquote>Фронтенд — единственная область разработки, где твой код видит миллион человек, но замечают только когда он сломан.</blockquote>
+    <cite>— Из разговора продакта с фронтендером</cite>
+  </div>
+
+  <footer class="footer-glass">
+    <span>Frontend Developer Guide</span>
+    <span>State of JS 2024 · Хабр Карьера 2025</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  var burger = document.getElementById('burgerGlass');
+  var close = document.getElementById('closeGlass');
+  var menu = document.getElementById('sideGlass');
+  var overlay = document.getElementById('overlayGlass');
+
+  function open() { menu.classList.add('open'); overlay.classList.add('show'); document.body.style.overflow = 'hidden'; }
+  function closeM() { menu.classList.remove('open'); overlay.classList.remove('show'); document.body.style.overflow = ''; }
+
+  burger.addEventListener('click', open);
+  close.addEventListener('click', closeM);
+  overlay.addEventListener('click', closeM);
+  document.querySelectorAll('#sideGlass a').forEach(function(a) { a.addEventListener('click', closeM); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && menu.classList.contains('open')) closeM(); });
+})();
+</script>
+</body>
+</html>
