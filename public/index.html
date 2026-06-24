@@ -3,361 +3,892 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FRONTEND — гайд по профессии</title>
-<link rel="stylesheet" href="output.css"/>
-</head>
-<body class="bg-base-body text-ink-main antialiased">
+<title>FRONTEND // BLUEPRINT</title>
+<style>
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<!-- NAVBAR -->
-<nav class="sticky top-0 z-50 bg-base-card border-b-4 border-edge">
-  <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-    <span class="text-sm font-bold uppercase tracking-widest">Frontend Guide</span>
-    <button id="menuBtn" class="border-3 border-edge px-3 py-1 text-xl leading-none hover:bg-inv-bg hover:text-inv-fg transition-none cursor-pointer">☰</button>
+/* ─── FONTS ─── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap');
+
+/* ─── CSS VARS ─── */
+:root {
+  --bg: #0f2940;
+  --bg-card: rgba(20, 60, 100, 0.35);
+  --fg: #c8dce8;
+  --fg-dim: #6a9ab8;
+  --fg-bright: #e8f4ff;
+  --edge: #2a7ab0;
+  --edge-light: rgba(42, 122, 176, 0.3);
+  --accent: #f4b83a;
+  --accent-dim: rgba(244, 184, 58, 0.3);
+  --grid: rgba(42, 122, 176, 0.08);
+  --gutter: 20px;
+  --col-w: 960px;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ─── GRID OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--edge); border-radius: 0; }
+
+.container {
+  max-width: var(--col-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── NAV ─── */
+.blue-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 41, 64, 0.92);
+  border-bottom: 2px dashed var(--edge);
+  backdrop-filter: blur(8px);
+}
+
+.blue-nav-inner {
+  max-width: var(--col-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.blue-nav-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--fg-bright);
+}
+
+.blue-nav-title span {
+  color: var(--accent);
+}
+
+.burger-blue {
+  background: transparent;
+  border: 2px dashed var(--edge);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 20px;
+  padding: 4px 12px 6px;
+  cursor: pointer;
+  transition: border .2s;
+}
+
+.burger-blue:hover {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── SIDE MENU ─── */
+.side-blue {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
+  z-index: 200;
+  background: rgba(10, 30, 48, 0.97);
+  border-left: 2px solid var(--edge);
+  padding: 28px 24px;
+  overflow-y: auto;
+  transition: right .3s ease;
+}
+
+.side-blue.open { right: 0; }
+
+.side-blue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 2px dashed var(--edge);
+}
+
+.side-blue-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--fg-dim);
+}
+
+.close-blue {
+  background: transparent;
+  border: 2px dashed var(--edge);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 18px;
+  padding: 2px 10px 4px;
+  cursor: pointer;
+}
+
+.close-blue:hover { border-style: solid; border-color: var(--accent); color: var(--accent); }
+
+.side-blue-nav { list-style: none; }
+.side-blue-nav li { border-bottom: 2px dotted var(--edge-light); }
+.side-blue-nav a {
+  display: block;
+  padding: 14px 0;
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: color .15s;
+}
+.side-blue-nav a:hover { color: var(--accent); }
+.side-blue-nav small {
+  display: block;
+  font-weight: 400;
+  font-size: 9px;
+  color: var(--fg-dim);
+  margin-top: 1px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.side-blue-footer {
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 2px dashed var(--edge);
+}
+
+/* ─── BLUEPRINT CORNER BRACKETS ─── */
+.bp-card {
+  position: relative;
+  border: 2px solid var(--edge);
+  background: var(--bg-card);
+  padding: 28px 32px;
+  margin-bottom: var(--gutter);
+}
+
+.bp-card::before {
+  content: '┌';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bp-card::after {
+  content: '┘';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bp-card-shifted {
+  margin-left: 16px;
+}
+
+.bp-card-shifted::before {
+  content: '┌';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bp-card-shifted::after {
+  content: '┘';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ─── HERO ─── */
+.hero-blue {
+  padding: 48px 40px;
+  margin: 24px 0 32px;
+  border: 2px solid var(--edge);
+  background: var(--bg-card);
+  position: relative;
+}
+
+.hero-blue::before {
+  content: '┌──────────────────────────────┐';
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  font-size: 10px;
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.hero-blue::after {
+  content: '└──────────────────────────────┘';
+  position: absolute;
+  bottom: -14px;
+  right: 20px;
+  font-size: 10px;
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.hero-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--fg-dim);
+  margin-bottom: 16px;
+}
+
+.hero-blue h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  color: var(--fg-bright);
+}
+
+.hero-blue h1 span {
+  color: var(--accent);
+  display: block;
+}
+
+.hero-desc {
+  font-size: 14px;
+  color: var(--fg-dim);
+  max-width: 580px;
+  border-left: 3px solid var(--accent);
+  padding-left: 18px;
+  margin-top: 16px;
+}
+
+/* ─── SECTION META ─── */
+.sec-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.sec-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  color: var(--fg-bright);
+}
+
+.sec-title small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--fg-dim);
+  margin-top: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0;
+}
+
+/* ─── STATS ─── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-item {
+  border: 1px solid var(--edge-light);
+  padding: 20px;
+  background: rgba(20, 60, 100, 0.15);
+  transition: border .2s;
+}
+
+.stat-item:hover {
+  border-color: var(--edge);
+}
+
+.stat-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--fg-dim);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fg-bright);
+}
+
+.stat-note {
+  font-size: 11px;
+  color: var(--fg-dim);
+  margin-top: 4px;
+}
+
+/* ─── SALARY TABLE ─── */
+.st-bl { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.st-bl th {
+  text-align: left;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--fg-dim);
+  padding: 8px 12px;
+  border-bottom: 2px dashed var(--edge-light);
+  font-weight: 600;
+}
+.st-bl td { padding: 10px 12px; border-bottom: 1px dotted var(--edge-light); }
+.st-bl tr:last-child td { border-bottom: none; }
+.sb-wrap { height: 6px; background: rgba(20, 60, 100, 0.3); overflow: hidden; }
+.sb-fill { height: 100%; background: var(--accent); }
+
+/* ─── DUTY GRID ─── */
+.duty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.duty-card {
+  border: 1px solid var(--edge-light);
+  padding: 22px;
+  background: rgba(20, 60, 100, 0.1);
+  transition: border .2s, background .2s;
+}
+.duty-card:hover {
+  border-color: var(--accent-dim);
+  background: rgba(20, 60, 100, 0.2);
+}
+.duty-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--edge);
+  margin-bottom: 8px;
+}
+.duty-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dotted var(--edge-light);
+  color: var(--fg-bright);
+}
+.duty-card p {
+  font-size: 12px;
+  color: var(--fg-dim);
+  line-height: 1.7;
+}
+
+/* ─── TECH ─── */
+.tech-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.tech-col {
+  border: 1px solid var(--edge-light);
+  padding: 20px;
+  background: rgba(20, 60, 100, 0.1);
+}
+.tech-col h3 {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.tech-col ul { list-style: none; }
+.tech-col li {
+  font-size: 12px;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px dotted var(--edge-light);
+  color: var(--fg);
+}
+.tech-col li:last-child { border-bottom: none; }
+.t-dot { width: 8px; height: 8px; border: 2px solid var(--edge); flex-shrink: 0; }
+.t-dot.filled { background: var(--accent); border-color: var(--accent); }
+
+/* ─── CAREER ─── */
+.career-l { list-style: none; }
+.career-l li {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px dotted var(--edge-light);
+  font-size: 13px;
+  color: var(--fg-dim);
+}
+.career-l li:last-child { border-bottom: none; }
+.career-m {
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 60px;
+}
+
+/* ─── TRENDS ─── */
+.trend-l { list-style: none; }
+.trend-l li {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px dotted var(--edge-light);
+  font-size: 13px;
+  color: var(--fg-dim);
+}
+.trend-l li:last-child { border-bottom: none; }
+.trend-lbl { font-weight: 600; color: var(--fg-bright); flex-shrink: 0; min-width: 110px; }
+
+/* ─── FAQ ─── */
+.faq-bp {
+  border: 1px solid var(--edge-light);
+  margin-bottom: 8px;
+  background: rgba(20, 60, 100, 0.08);
+}
+.faq-bp[open] { border-color: var(--edge); }
+
+.faq-sum {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-bright);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+.faq-sum::-webkit-details-marker { display: none; }
+.faq-sum::after { content: '+'; font-size: 16px; color: var(--edge); }
+.faq-bp[open] .faq-sum::after { content: '−'; color: var(--accent); }
+
+.faq-body {
+  padding: 0 16px 12px;
+  font-size: 12px;
+  color: var(--fg-dim);
+  line-height: 1.7;
+}
+
+/* ─── RESOURCES ─── */
+.res-blue {
+  display: block;
+  border: 1px solid var(--edge-light);
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: var(--fg-bright);
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(20, 60, 100, 0.08);
+  transition: all .2s;
+}
+.res-blue:hover {
+  border-color: var(--accent-dim);
+  background: rgba(20, 60, 100, 0.2);
+  padding-left: 24px;
+}
+.res-blue small {
+  display: block;
+  font-weight: 400;
+  font-size: 10px;
+  color: var(--fg-dim);
+  margin-top: 2px;
+}
+
+/* ─── QUOTE ─── */
+.quote-blue {
+  border: 2px solid var(--accent-dim);
+  padding: 36px 32px;
+  margin-bottom: var(--gutter);
+  background: rgba(244, 184, 58, 0.04);
+  text-align: center;
+}
+.quote-blue blockquote {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--fg-bright);
+  letter-spacing: -0.01em;
+}
+.quote-blue cite {
+  display: block;
+  margin-top: 14px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--fg-dim);
+  font-style: normal;
+}
+
+/* ─── DIVIDER ─── */
+.divider-bp {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--edge) 0, var(--edge) 8px, transparent 8px, transparent 16px);
+  margin: 24px 0;
+  border: none;
+}
+
+/* ─── FOOTER ─── */
+.ft-blue {
+  border-top: 2px dashed var(--edge);
+  padding: 28px 0;
+  margin-top: 32px;
+  margin-bottom: 40px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--fg-dim);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 750px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  .duty-grid { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .bp-card { padding: 20px; }
+  .hero-blue { padding: 32px 24px; }
+  .hero-blue::before, .hero-blue::after { display: none; }
+  .bp-card-shifted { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<nav class="blue-nav">
+  <div class="blue-nav-inner">
+    <span class="blue-nav-title"><span>◆</span> FRONTEND.BP</span>
+    <button class="burger-blue" id="burgerBlue">☰</button>
   </div>
 </nav>
 
-<!-- SIDE MENU -->
-<div id="sideMenu" class="fixed top-0 right-0 h-full w-72 z-50 bg-base-card border-l-4 border-edge px-6 py-6 translate-x-full transition-transform duration-300 overflow-y-auto">
-  <div class="flex items-center justify-between mb-6 pb-4 border-b-3 border-edge">
-    <span class="text-xs font-bold uppercase tracking-widest text-ink-subtle">Навигация</span>
-    <button id="closeBtn" class="border-2 border-edge px-2 py-0.5 text-lg leading-none cursor-pointer">✕</button>
+<div class="side-blue" id="sideBlue">
+  <div class="side-blue-header">
+    <span class="side-blue-title">NAV //</span>
+    <button class="close-blue" id="closeBlue">✕</button>
   </div>
-  <ul class="space-y-0">
-    <li><a href="#intro" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Введение<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Кто это?</small></a></li>
-    <li><a href="#market" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Цифры<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Рынок и факты</small></a></li>
-    <li><a href="#salary" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Зарплаты<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">По грейдам</small></a></li>
-    <li><a href="#duties" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Обязанности<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Что делает</small></a></li>
-    <li><a href="#stack" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Стек<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Технологии</small></a></li>
-    <li><a href="#career" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Карьера<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Путь</small></a></li>
-    <li><a href="#trends" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Тренды<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Куда движется</small></a></li>
-    <li><a href="#faq" class="block py-3 border-b border-rule text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Мифы<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">FAQ</small></a></li>
-    <li><a href="#resources" class="block py-3 text-sm font-semibold uppercase tracking-wide hover:underline underline-offset-4 decoration-2">Ресурсы<small class="block font-normal text-xs text-ink-subtle uppercase tracking-normal mt-0.5">Что читать</small></a></li>
+  <ul class="side-blue-nav">
+    <li><a href="#intro">Введение<small>Кто это?</small></a></li>
+    <li><a href="#market">Цифры<small>Рынок и факты</small></a></li>
+    <li><a href="#salary">Зарплаты<small>По грейдам</small></a></li>
+    <li><a href="#duties">Обязанности<small>Что делает</small></a></li>
+    <li><a href="#stack">Стек<small>Технологии</small></a></li>
+    <li><a href="#career">Карьера<small>Путь</small></a></li>
+    <li><a href="#trends">Тренды<small>Куда движется</small></a></li>
+    <li><a href="#faq">Мифы<small>FAQ</small></a></li>
+    <li><a href="#resources">Ресурсы<small>Что читать</small></a></li>
   </ul>
-  <div class="mt-6 pt-4 border-t-3 border-edge">
-    <button id="darkBtn" class="w-full border-3 border-edge bg-inv-bg text-inv-fg px-4 py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-base-card hover:text-ink-main transition-none cursor-pointer mb-3">Тёмная тема</button>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">Палитра</p>
-    <div class="grid grid-cols-4 gap-2">
-      <button data-theme-val="slate" class="theme-swatch h-9 border-2 border-edge bg-[#f5f5f5] hover:scale-105 transition-transform cursor-pointer" title="Slate"></button>
-      <button data-theme-val="ember" class="theme-swatch h-9 border-2 border-edge bg-[#fef2f0] hover:scale-105 transition-transform cursor-pointer" title="Ember"></button>
-      <button data-theme-val="teal" class="theme-swatch h-9 border-2 border-edge bg-[#f0fdfa] hover:scale-105 transition-transform cursor-pointer" title="Teal"></button>
-      <button data-theme-val="violet" class="theme-swatch h-9 border-2 border-edge bg-[#f5f3ff] hover:scale-105 transition-transform cursor-pointer" title="Violet"></button>
-    </div>
+  <div class="side-blue-footer">
+    <p style="font-size:9px;color:var(--fg-dim);letter-spacing:0.1em;text-transform:uppercase;">Схема v2.4 // 2026</p>
   </div>
 </div>
 
-<div id="overlay" class="fixed inset-0 z-40 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+<div id="overlayBlue" style="position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity .3s;"></div>
 
-<div class="max-w-5xl mx-auto px-4">
+<div class="container">
 
   <!-- HERO -->
-  <header class="border-4 border-edge bg-base-card p-8 md:p-10 my-6 relative">
-    <div class="absolute top-2 left-2 w-full h-full border-2 border-edge -z-10"></div>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-4">Гайд по профессии</p>
-    <h1 class="text-5xl sm:text-7xl md:text-8xl font-black uppercase leading-none -tracking-2 mb-5">
-      <span class="inline-block bg-inv-bg text-inv-fg pr-3">FRONTEND</span><br/>
-      РАЗРАБОТЧИК
-    </h1>
-    <div class="text-lg max-w-xl border-l-6 border-edge pl-5 mt-6 text-ink-muted">
+  <div class="hero-blue">
+    <p class="hero-label">// SPEC v2.4 — Гайд по профессии</p>
+    <h1><span>FRONTEND</span>РАЗРАБОТЧИК</h1>
+    <div class="hero-desc">
       Инженер интерфейсов. Строит то, что вы видите в браузере. Не путать с верстальщиком.
     </div>
-  </header>
+  </div>
 
   <!-- ВВЕДЕНИЕ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5 ml-4 relative" id="intro">
-    <div class="absolute -top-1.5 -left-1.5 w-full h-full border-2 border-edge -z-10"></div>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">001 / Введение</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Кто это?
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Определение и границы ответственности</small>
-    </h2>
-    <div class="text-base text-ink-muted max-w-2xl space-y-3">
-      <p><strong class="text-ink-main">Frontend-разработчик</strong> — специалист, который реализует пользовательский интерфейс веб-приложения. Он берёт дизайн-макет и превращает его в код, работающий в браузере. В зону ответственности входит: вёрстка, логика интерфейса, работа с данными от сервера, оптимизация загрузки, обеспечение доступности (a11y) и кросс-браузерной совместимости.</p>
-      <p>В отличие от <strong class="text-ink-main">верстальщика</strong> (который только раскладывает блоки по сетке), фронтенд-разработчик пишет полноценную клиентскую логику: управляет состоянием приложения, обрабатывает пользовательские сценарии, работает с API, настраивает сборку и деплой.</p>
+  <section class="bp-card bp-card-shifted" id="intro">
+    <p class="sec-tag">001 // Введение</p>
+    <h2 class="sec-title">Кто это?<small>Определение и границы ответственности</small></h2>
+    <div style="max-width:680px;font-size:13px;color:var(--fg-dim);line-height:1.8;">
+      <p style="margin-bottom:10px;"><strong style="color:var(--fg-bright);">Frontend-разработчик</strong> — специалист, который реализует пользовательский интерфейс веб-приложения. Он берёт дизайн-макет и превращает его в код, работающий в браузере. В зону ответственности входит: вёрстка, логика интерфейса, работа с данными от сервера, оптимизация загрузки, обеспечение доступности (a11y) и кросс-браузерной совместимости.</p>
+      <p>В отличие от <strong style="color:var(--fg-bright);">верстальщика</strong> (который только раскладывает блоки по сетке), фронтенд-разработчик пишет полноценную клиентскую логику: управляет состоянием приложения, обрабатывает пользовательские сценарии, работает с API, настраивает сборку и деплой.</p>
     </div>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- ЦИФРЫ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5" id="market">
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">002 / Рынок</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Цифры и факты
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Чтобы понимать масштаб</small>
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-      <div class="border-2 border-edge p-4 md:p-5">
-        <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-1">Вакансий на hh.ru</p>
-        <p class="text-2xl font-black">~12 000</p>
-        <p class="text-sm text-ink-muted mt-1">Ежемесячно открытых позиций (2025–2026)</p>
+  <section class="bp-card" id="market">
+    <p class="sec-tag">002 // Рынок</p>
+    <h2 class="sec-title">Цифры и факты<small>Чтобы понимать масштаб</small></h2>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <p class="stat-label">Вакансий на hh.ru</p>
+        <p class="stat-value">~12 000</p>
+        <p class="stat-note">Ежемесячно открытых позиций (2025–2026)</p>
       </div>
-      <div class="border-2 border-edge p-4 md:p-5">
-        <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-1">Медианная зарплата</p>
-        <p class="text-2xl font-black">220 000 ₽</p>
-        <p class="text-sm text-ink-muted mt-1">Middle+ / Senior, Москва (Хабр Карьера)</p>
+      <div class="stat-item">
+        <p class="stat-label">Медианная зарплата</p>
+        <p class="stat-value">220 000 ₽</p>
+        <p class="stat-note">Middle+ / Senior, Москва (Хабр Карьера)</p>
       </div>
-      <div class="border-2 border-edge p-4 md:p-5">
-        <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-1">React используют</p>
-        <p class="text-2xl font-black">82%</p>
-        <p class="text-sm text-ink-muted mt-1">Опрошенных разработчиков (State of JS 2024)</p>
+      <div class="stat-item">
+        <p class="stat-label">React используют</p>
+        <p class="stat-value">82%</p>
+        <p class="stat-note">Опрошенных разработчиков (State of JS 2024)</p>
       </div>
-      <div class="border-2 border-edge p-4 md:p-5">
-        <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-1">До Middle</p>
-        <p class="text-2xl font-black">~3.5 года</p>
-        <p class="text-sm text-ink-muted mt-1">Среднее время роста от Junior до Middle</p>
+      <div class="stat-item">
+        <p class="stat-label">До Middle</p>
+        <p class="stat-value">~3.5 года</p>
+        <p class="stat-note">Среднее время роста</p>
       </div>
     </div>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- ЗАРПЛАТЫ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5 ml-4 relative" id="salary">
-    <div class="absolute -top-1.5 -left-1.5 w-full h-full border-2 border-edge -z-10"></div>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">002 / Компенсация</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Зарплаты по грейдам
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Москва, ₽, медиана 2025</small>
-    </h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm mt-3">
+  <section class="bp-card bp-card-shifted" id="salary">
+    <p class="sec-tag">002 // Компенсация</p>
+    <h2 class="sec-title">Зарплаты по грейдам<small>Москва, ₽, медиана 2025</small></h2>
+    <div class="overflow-x-auto" style="overflow-x:auto;">
+      <table class="st-bl">
         <thead>
-          <tr class="text-xs uppercase tracking-widest text-ink-subtle">
-            <th class="text-left p-2 border-b-2 border-edge">Уровень</th>
-            <th class="text-left p-2 border-b-2 border-edge">Медиана</th>
-            <th class="text-left p-2 border-b-2 border-edge">Вилка</th>
-            <th class="text-left p-2 border-b-2 border-edge">Рынок</th>
-          </tr>
+          <tr><th>Уровень</th><th>Медиана</th><th>Вилка</th><th>Рынок</th></tr>
         </thead>
         <tbody>
-          <tr><td class="p-2 border-b border-rule font-bold">Junior</td><td class="p-2 border-b border-rule">90 000</td><td class="p-2 border-b border-rule">60–120k</td><td class="p-2 border-b border-rule"><div class="h-2 w-full border border-edge"><div class="h-full bg-inv-bg" style="width:20%"></div></div></td></tr>
-          <tr><td class="p-2 border-b border-rule font-bold">Middle</td><td class="p-2 border-b border-rule">220 000</td><td class="p-2 border-b border-rule">150–300k</td><td class="p-2 border-b border-rule"><div class="h-2 w-full border border-edge"><div class="h-full bg-inv-bg" style="width:55%"></div></div></td></tr>
-          <tr><td class="p-2 border-b border-rule font-bold">Senior</td><td class="p-2 border-b border-rule">400 000</td><td class="p-2 border-b border-rule">300–600k</td><td class="p-2 border-b border-rule"><div class="h-2 w-full border border-edge"><div class="h-full bg-inv-bg" style="width:85%"></div></div></td></tr>
-          <tr><td class="p-2 font-bold">Lead</td><td class="p-2">550 000</td><td class="p-2">400–700k+</td><td class="p-2"><div class="h-2 w-full border border-edge"><div class="h-full bg-inv-bg" style="width:100%"></div></div></td></tr>
+          <tr><td style="color:var(--fg-bright);font-weight:600;">Junior</td><td>90 000</td><td>60–120k</td><td><div class="sb-wrap"><div class="sb-fill" style="width:20%"></div></div></td></tr>
+          <tr><td style="color:var(--fg-bright);font-weight:600;">Middle</td><td>220 000</td><td>150–300k</td><td><div class="sb-wrap"><div class="sb-fill" style="width:55%"></div></div></td></tr>
+          <tr><td style="color:var(--fg-bright);font-weight:600;">Senior</td><td>400 000</td><td>300–600k</td><td><div class="sb-wrap"><div class="sb-fill" style="width:85%"></div></div></td></tr>
+          <tr><td style="color:var(--fg-bright);font-weight:600;">Lead</td><td>550 000</td><td>400–700k+</td><td><div class="sb-wrap"><div class="sb-fill" style="width:100%"></div></div></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- ОБЯЗАННОСТИ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5" id="duties">
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">003 / Обязанности</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Что реально делает?
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Не «пишет код», а решает проблемы</small>
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <div class="border-3 border-edge p-5">
-        <p class="text-3xl font-black text-inv-dim mb-2">01</p>
-        <h3 class="text-sm font-bold uppercase tracking-wide mb-2 pb-2 border-b-2 border-edge">Строит интерфейсы</h3>
-        <p class="text-sm text-ink-muted leading-relaxed">Собирает приложение из компонентов. Управляет состоянием (Redux, Zustand, Pinia или signals). Настраивает роутинг. Следит, чтобы интерфейс не перерисовывался без необходимости — мемоизация, виртуализация списков, оптимизация ре-рендеров.</p>
+  <section class="bp-card" id="duties">
+    <p class="sec-tag">003 // Обязанности</p>
+    <h2 class="sec-title">Что реально делает?<small>Не «пишет код», а решает проблемы</small></h2>
+    <div class="duty-grid">
+      <div class="duty-card">
+        <p class="duty-num">[01]</p>
+        <h3>Строит интерфейсы</h3>
+        <p>Собирает приложение из компонентов. Управляет состоянием (Redux, Zustand, Pinia или signals). Настраивает роутинг. Мемоизация, виртуализация списков, оптимизация ре-рендеров.</p>
       </div>
-      <div class="border-3 border-edge p-5 bg-inv-bg text-inv-fg">
-        <p class="text-3xl font-black text-inv-dim mb-2">02</p>
-        <h3 class="text-sm font-bold uppercase tracking-wide mb-2 pb-2 border-b-2 border-inv-fg">Работает с данными</h3>
-        <p class="text-sm text-inv-muted leading-relaxed">Ходит в API (REST / GraphQL), кеширует ответы (React Query / SWR / Apollo), обновляет данные через WebSocket или SSE. Обрабатывает загрузку, ошибки, ретраи. Делает optimistic updates для отзывчивости.</p>
+      <div class="duty-card">
+        <p class="duty-num">[02]</p>
+        <h3>Работает с данными</h3>
+        <p>Ходит в API (REST / GraphQL), кеширует ответы (React Query / SWR / Apollo), обновляет через WebSocket или SSE. Обрабатывает ошибки, ретраи, optimistic updates.</p>
       </div>
-      <div class="border-3 border-edge p-5 bg-inv-bg text-inv-fg">
-        <p class="text-3xl font-black text-inv-dim mb-2">03</p>
-        <h3 class="text-sm font-bold uppercase tracking-wide mb-2 pb-2 border-b-2 border-inv-fg">Оптимизирует</h3>
-        <p class="text-sm text-inv-muted leading-relaxed">Следит за Core Web Vitals: LCP, CLS, INP. Дробит бандл через code splitting, грузит лениво (lazy loading), сжимает изображения (WebP/AVIF), настраивает кеширование через Service Worker.</p>
+      <div class="duty-card">
+        <p class="duty-num">[03]</p>
+        <h3>Оптимизирует</h3>
+        <p>Следит за Core Web Vitals: LCP, CLS, INP. Дробит бандл через code splitting, ленивая загрузка, WebP/AVIF, Service Worker кеширование.</p>
       </div>
-      <div class="border-3 border-edge p-5">
-        <p class="text-3xl font-black text-inv-dim mb-2">04</p>
-        <h3 class="text-sm font-bold uppercase tracking-wide mb-2 pb-2 border-b-2 border-edge">Обеспечивает качество</h3>
-        <p class="text-sm text-ink-muted leading-relaxed">Пишет тесты: модульные (Vitest), компонентные (Testing Library), E2E (Playwright). Внедряет линтеры и форматтеры. Проводит code review. Проверяет доступность: семантика, aria, клавиатура, WCAG 2.1 AA.</p>
+      <div class="duty-card">
+        <p class="duty-num">[04]</p>
+        <h3>Обеспечивает качество</h3>
+        <p>Тесты: Vitest, Testing Library, Playwright. Линтеры, code review, доступность: семантика, aria, клавиатура, WCAG 2.1 AA.</p>
       </div>
     </div>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- СТЕК -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5 ml-4 relative" id="stack">
-    <div class="absolute -top-1.5 -left-1.5 w-full h-full border-2 border-edge -z-10"></div>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">004 / Стек</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Технологии
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Языки, фреймворки, инструменты</small>
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <div class="border-3 border-edge p-5">
-        <h3 class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-3">Языки</h3>
-        <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>JavaScript (ES2024+)</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>TypeScript (стандарт)</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge shrink-0"></span>HTML5 (семантика, a11y)</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>CSS3 (Grid, Container Queries)</li>
+  <section class="bp-card bp-card-shifted" id="stack">
+    <p class="sec-tag">004 // Стек</p>
+    <h2 class="sec-title">Технологии<small>Языки, фреймворки, инструменты</small></h2>
+    <div class="tech-grid">
+      <div class="tech-col">
+        <h3>Языки</h3>
+        <ul>
+          <li><span class="t-dot filled"></span>JavaScript (ES2024+)</li>
+          <li><span class="t-dot filled"></span>TypeScript (стандарт)</li>
+          <li><span class="t-dot"></span>HTML5 (семантика, a11y)</li>
+          <li><span class="t-dot filled"></span>CSS3 (Grid, Container Queries)</li>
         </ul>
       </div>
-      <div class="border-3 border-edge p-5">
-        <h3 class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-3">Фреймворки</h3>
-        <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>React 19 + Next.js / Remix</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>Vue 3 + Nuxt</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge shrink-0"></span>Angular 17+ (standalone API)</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>Svelte 5 + SvelteKit</li>
+      <div class="tech-col">
+        <h3>Фреймворки</h3>
+        <ul>
+          <li><span class="t-dot filled"></span>React 19 + Next.js / Remix</li>
+          <li><span class="t-dot filled"></span>Vue 3 + Nuxt</li>
+          <li><span class="t-dot"></span>Angular 17+</li>
+          <li><span class="t-dot filled"></span>Svelte 5 + SvelteKit</li>
         </ul>
       </div>
-      <div class="border-3 border-edge p-5">
-        <h3 class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-3">Инфраструктура</h3>
-        <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>Vite — сборка (стандарт)</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge shrink-0"></span>Tailwind CSS</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>ESLint + Prettier</li>
-          <li class="flex items-center gap-2"><span class="w-2 h-2 border-2 border-edge bg-inv-bg shrink-0"></span>Husky + lint-staged</li>
+      <div class="tech-col">
+        <h3>Инфраструктура</h3>
+        <ul>
+          <li><span class="t-dot filled"></span>Vite (стандарт сборки)</li>
+          <li><span class="t-dot"></span>Tailwind CSS</li>
+          <li><span class="t-dot filled"></span>ESLint + Prettier</li>
+          <li><span class="t-dot filled"></span>Husky + lint-staged</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- КАРЬЕРА -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5" id="career">
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">005 / Карьера</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Путь в профессии
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">От джуна до лида — что меняется</small>
-    </h2>
-    <ul class="space-y-0">
-      <li class="flex gap-3 py-3 border-b border-rule text-sm"><span class="font-black text-ink-main shrink-0 w-16">Junior</span><span class="text-ink-muted">Вёрстка по Figma, простые компоненты, основы JS и один фреймворк. Нужен код-ревью. 0–1.5 года. 60–120k.</span></li>
-      <li class="flex gap-3 py-3 border-b border-rule text-sm"><span class="font-black text-ink-main shrink-0 w-16">Middle</span><span class="text-ink-muted">Уверенный фреймворк, сборка, тесты, ревью. Понимает SSR vs SPA vs SSG. Рефакторит без страха. 1.5–5 лет. 150–300k.</span></li>
-      <li class="flex gap-3 py-3 border-b border-rule text-sm"><span class="font-black text-ink-main shrink-0 w-16">Senior</span><span class="text-ink-muted">Архитектура фронтенда, выбор стека, performance. Участвует в планировании. Знает бэкенд на уровне API. 5+ лет. 300–600k+.</span></li>
-      <li class="flex gap-3 py-3 text-sm"><span class="font-black text-ink-main shrink-0 w-16">Lead</span><span class="text-ink-muted">Управляет командой, нанимает, онбордит, выстраивает процессы. Код редко — в основном ревью и прототипы.</span></li>
+  <section class="bp-card" id="career">
+    <p class="sec-tag">005 // Карьера</p>
+    <h2 class="sec-title">Путь в профессии<small>От джуна до лида — что меняется</small></h2>
+    <ul class="career-l">
+      <li><span class="career-m">Junior</span><span>Вёрстка по Figma, простые компоненты, основы JS и один фреймворк. Нужен код-ревью. 0–1.5 года. 60–120k.</span></li>
+      <li><span class="career-m">Middle</span><span>Уверенный фреймворк, сборка, тесты, ревью. Понимает SSR vs SPA vs SSG. 1.5–5 лет. 150–300k.</span></li>
+      <li><span class="career-m">Senior</span><span>Архитектура, выбор стека, performance. Участвует в планировании. Знает бэкенд. 5+ лет. 300–600k+.</span></li>
+      <li><span class="career-m">Lead</span><span>Управляет командой, нанимает, онбордит, процессы. Код редко — в основном ревью и прототипы.</span></li>
     </ul>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- ТРЕНДЫ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5 ml-4 relative" id="trends">
-    <div class="absolute -top-1.5 -left-1.5 w-full h-full border-2 border-edge -z-10"></div>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">006 / Тренды</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Что прямо сейчас
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Куда движется индустрия</small>
-    </h2>
-    <ul class="space-y-0 mb-4">
-      <li class="flex gap-3 py-3 border-b border-rule text-sm"><span class="font-black shrink-0 w-32">Server Components</span><span class="text-ink-muted">React Server Components (RSC) меняют подход: часть компонентов рендерится на сервере без отправки JS на клиент. Меньше бандла, быстрее загрузка.</span></li>
-      <li class="flex gap-3 py-3 border-b border-rule text-sm"><span class="font-black shrink-0 w-32">AI в интерфейсе</span><span class="text-ink-muted">Чат-интерфейсы, AI-автодополнение, генерация UI по промпту. Stream через SSE — стандартный паттерн.</span></li>
-      <li class="flex gap-3 py-3 border-b border-rule text-sm"><span class="font-black shrink-0 w-32">WebGPU</span><span class="text-ink-muted">API для вычислений на GPU в браузере. Тяжёлая 3D-графика, симуляции, ML-инференс на клиенте без плагинов.</span></li>
-      <li class="flex gap-3 py-3 text-sm"><span class="font-black shrink-0 w-32">Меньше JS</span><span class="text-ink-muted">Island architecture (Astro), partial hydration (Qwik), компилируемые фреймворки (Svelte, Solid). Меньше JS = быстрее сайт.</span></li>
+  <section class="bp-card bp-card-shifted" id="trends">
+    <p class="sec-tag">006 // Тренды</p>
+    <h2 class="sec-title">Что прямо сейчас<small>Куда движется индустрия</small></h2>
+    <ul class="trend-l">
+      <li><span class="trend-lbl">Server Components</span><span>React Server Components (RSC): часть компонентов рендерится на сервере без отправки JS на клиент.</span></li>
+      <li><span class="trend-lbl">AI в интерфейсе</span><span>Чат-интерфейсы, AI-автодополнение, генерация UI по промпту. Stream через SSE.</span></li>
+      <li><span class="trend-lbl">WebGPU</span><span>API для вычислений на GPU в браузере. 3D-графика, симуляции, ML-инференс.</span></li>
+      <li><span class="trend-lbl">Меньше JS</span><span>Island architecture (Astro), partial hydration (Qwik), компилируемые фреймворки.</span></li>
     </ul>
-    <p class="text-sm text-ink-subtle border-t-2 border-rule pt-3"><strong class="text-ink-muted">Источники:</strong> State of JS 2024, HTTP Archive, Web Almanac, JetBrains.</p>
+    <p style="font-size:10px;color:var(--fg-dim);border-top:1px dotted var(--edge-light);padding-top:10px;margin-top:8px;"><strong>Источники:</strong> State of JS 2024, HTTP Archive, Web Almanac, JetBrains.</p>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- FAQ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5" id="faq">
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">007 / Мифы и FAQ</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Чего не надо говорить
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Популярные заблуждения и ответы</small>
-    </h2>
-    <details class="border-2 border-edge mb-2" open>
-      <summary class="px-4 py-3 text-sm font-bold uppercase tracking-wide cursor-pointer list-none flex justify-between items-center [&::-webkit-details-marker]:hidden">«Фронтенд — это же просто вёрстка»<span class="text-lg font-black">+</span></summary>
-      <div class="px-4 pb-3 text-sm text-ink-muted leading-relaxed">Фронтенд включает управление состоянием, оптимизацию производительности, тестирование, CI/CD. Вёрстка — 20–30% работы. Остальное — инженерия.</div>
+  <section class="bp-card" id="faq">
+    <p class="sec-tag">007 // Мифы и FAQ</p>
+    <h2 class="sec-title">Чего не надо говорить<small>Популярные заблуждения и ответы</small></h2>
+    <details class="faq-bp" open>
+      <summary class="faq-sum">«Фронтенд — это же просто вёрстка»</summary>
+      <div class="faq-body">Фронтенд включает управление состоянием, оптимизацию производительности, тестирование, CI/CD. Вёрстка — 20–30% работы.</div>
     </details>
-    <details class="border-2 border-edge mb-2">
-      <summary class="px-4 py-3 text-sm font-bold uppercase tracking-wide cursor-pointer list-none flex justify-between items-center [&::-webkit-details-marker]:hidden">«Можно без математики»<span class="text-lg font-black">+</span></summary>
-      <div class="px-4 pb-3 text-sm text-ink-muted leading-relaxed">Анимации, алгоритмы поиска/фильтрации, сложность O(n), работа с canvas и WebGL — математика нужна регулярно. Хотя бы на уровне алгоритмов.</div>
+    <details class="faq-bp">
+      <summary class="faq-sum">«Можно без математики»</summary>
+      <div class="faq-body">Анимации, алгоритмы поиска/фильтрации, O(n), canvas, WebGL — математика нужна регулярно.</div>
     </details>
-    <details class="border-2 border-edge mb-2">
-      <summary class="px-4 py-3 text-sm font-bold uppercase tracking-wide cursor-pointer list-none flex justify-between items-center [&::-webkit-details-marker]:hidden">«Все фреймворки — одно и то же»<span class="text-lg font-black">+</span></summary>
-      <div class="px-4 pb-3 text-sm text-ink-muted leading-relaxed">React — библиотека без мнения. Vue — фреймворк с магией. Svelte — компилятор. Solid — без виртуального DOM. Разный подход к реактивности.</div>
+    <details class="faq-bp">
+      <summary class="faq-sum">«Все фреймворки — одно и то же»</summary>
+      <div class="faq-body">React — библиотека без мнения. Vue — фреймворк с магией. Svelte — компилятор. Solid — без виртуального DOM.</div>
     </details>
-    <details class="border-2 border-edge mb-2">
-      <summary class="px-4 py-3 text-sm font-bold uppercase tracking-wide cursor-pointer list-none flex justify-between items-center [&::-webkit-details-marker]:hidden">«Достаточно знать React»<span class="text-lg font-black">+</span></summary>
-      <div class="px-4 pb-3 text-sm text-ink-muted leading-relaxed">React — только инструмент. Без понимания DOM, HTTP, accessibility, рендеринга, бандлинга — вы просто пользователь чужого API.</div>
+    <details class="faq-bp">
+      <summary class="faq-sum">«Достаточно знать React»</summary>
+      <div class="faq-body">React — инструмент. Без DOM, HTTP, accessibility, бандлинга — вы просто пользователь API.</div>
     </details>
-    <details class="border-2 border-edge">
-      <summary class="px-4 py-3 text-sm font-bold uppercase tracking-wide cursor-pointer list-none flex justify-between items-center [&::-webkit-details-marker]:hidden">«AI скоро заменит фронтендеров»<span class="text-lg font-black">+</span></summary>
-      <div class="px-4 pb-3 text-sm text-ink-muted leading-relaxed">AI ускоряет написание кода, но не проектирование архитектуры, не принятие компромиссов, не понимание пользовательского опыта. Чем сложнее система — тем нужнее человек.</div>
+    <details class="faq-bp">
+      <summary class="faq-sum">«AI скоро заменит фронтендеров»</summary>
+      <div class="faq-body">AI ускоряет код, но не архитектуру, не компромиссы, не пользовательский опыт.</div>
     </details>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- РЕСУРСЫ -->
-  <section class="border-3 border-edge bg-base-card p-6 md:p-8 mb-5 ml-4 relative" id="resources">
-    <div class="absolute -top-1.5 -left-1.5 w-full h-full border-2 border-edge -z-10"></div>
-    <p class="text-xs font-bold uppercase tracking-widest text-ink-subtle mb-2">008 / Ресурсы</p>
-    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase -tracking-1 mb-4">
-      Что читать и смотреть
-      <small class="block text-sm font-normal text-ink-muted mt-1.5">Проверенные источники для роста</small>
-    </h2>
-    <a href="https://developer.mozilla.org" target="_blank" class="block border-2 border-edge p-3 md:p-4 mb-2 text-sm font-bold text-ink-main no-underline hover:bg-inv-bg hover:text-inv-fg">MDN Web Docs<small class="block font-normal text-xs text-ink-subtle uppercase tracking-wide mt-0.5">Главная документация — читать каждый день</small></a>
-    <a href="https://roadmap.sh/frontend" target="_blank" class="block border-2 border-edge p-3 md:p-4 mb-2 text-sm font-bold text-ink-main no-underline hover:bg-inv-bg hover:text-inv-fg">roadmap.sh / frontend<small class="block font-normal text-xs text-ink-subtle uppercase tracking-wide mt-0.5">Визуальная карта технологий от джуна до сеньора</small></a>
-    <a href="https://web.dev" target="_blank" class="block border-2 border-edge p-3 md:p-4 mb-2 text-sm font-bold text-ink-main no-underline hover:bg-inv-bg hover:text-inv-fg">web.dev<small class="block font-normal text-xs text-ink-subtle uppercase tracking-wide mt-0.5">Core Web Vitals и производительность от Google</small></a>
-    <a href="https://kentcdodds.com" target="_blank" class="block border-2 border-edge p-3 md:p-4 mb-2 text-sm font-bold text-ink-main no-underline hover:bg-inv-bg hover:text-inv-fg">Kent C. Dodds<small class="block font-normal text-xs text-ink-subtle uppercase tracking-wide mt-0.5">React, Testing, Epic React — один из лучших авторов</small></a>
-    <a href="https://www.joshwcomeau.com" target="_blank" class="block border-2 border-edge p-3 md:p-4 text-sm font-bold text-ink-main no-underline hover:bg-inv-bg hover:text-inv-fg">Josh W. Comeau<small class="block font-normal text-xs text-ink-subtle uppercase tracking-wide mt-0.5">CSS, React, анимации — глубокие разборы</small></a>
+  <section class="bp-card bp-card-shifted" id="resources">
+    <p class="sec-tag">008 // Ресурсы</p>
+    <h2 class="sec-title">Что читать и смотреть<small>Проверенные источники для роста</small></h2>
+    <a class="res-blue" href="https://developer.mozilla.org" target="_blank">MDN Web Docs<small>Главная документация — читать каждый день</small></a>
+    <a class="res-blue" href="https://roadmap.sh/frontend" target="_blank">roadmap.sh / frontend<small>Визуальная карта технологий</small></a>
+    <a class="res-blue" href="https://web.dev" target="_blank">web.dev<small>Core Web Vitals от Google</small></a>
+    <a class="res-blue" href="https://kentcdodds.com" target="_blank">Kent C. Dodds<small>React, Testing, Epic React</small></a>
+    <a class="res-blue" href="https://www.joshwcomeau.com" target="_blank">Josh W. Comeau<small>CSS, React, анимации</small></a>
   </section>
 
-  <div class="h-1 bg-edge my-6"></div>
+  <hr class="divider-bp"/>
 
   <!-- ЦИТАТА -->
-  <div class="border-4 border-edge p-8 md:p-10 bg-inv-bg text-inv-fg mb-5">
-    <blockquote class="text-xl sm:text-2xl font-bold leading-tight -tracking-0.5 max-w-2xl">
-      Фронтенд — единственная область разработки, где твой код<br class="hidden sm:inline"/>
-      видит миллион человек, но замечают только когда он сломан.
-    </blockquote>
-    <cite class="block mt-4 text-xs uppercase tracking-widest text-inv-muted not-italic">— Из разговора продакта с фронтендером</cite>
+  <div class="quote-blue">
+    <blockquote>Фронтенд — единственная область разработки, где твой код видит миллион человек, но замечают только когда он сломан.</blockquote>
+    <cite>— Из разговора продакта с фронтендером</cite>
   </div>
 
-  <footer class="border-t-4 border-edge py-7 mt-8 mb-10 text-xs uppercase tracking-widest text-ink-subtle flex justify-between flex-wrap gap-2">
-    <span>Frontend Developer Guide</span>
-    <span>State of JS 2024 · Хабр Карьера 2025 · здравый смысл</span>
+  <footer class="ft-blue">
+    <span>Frontend Developer Guide // BP v2.4</span>
+    <span>State of JS 2024 · Хабр Карьера 2025</span>
   </footer>
 
 </div>
 
 <script>
-const menuBtn = document.getElementById('menuBtn');
-const closeBtn = document.getElementById('closeBtn');
-const sideMenu = document.getElementById('sideMenu');
-const overlay = document.getElementById('overlay');
-const darkBtn = document.getElementById('darkBtn');
-
-function openMenu() { sideMenu.classList.remove('translate-x-full'); overlay.classList.remove('opacity-0', 'pointer-events-none'); document.body.style.overflow = 'hidden'; }
-function closeMenu() { sideMenu.classList.add('translate-x-full'); overlay.classList.add('opacity-0', 'pointer-events-none'); document.body.style.overflow = ''; }
-
-menuBtn.addEventListener('click', openMenu);
-closeBtn.addEventListener('click', closeMenu);
-overlay.addEventListener('click', closeMenu);
-document.querySelectorAll('#sideMenu a').forEach(function(a) { a.addEventListener('click', closeMenu); });
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && !sideMenu.classList.contains('translate-x-full')) closeMenu(); });
-
-// Dark mode toggle
-function toggleDark() {
-  const html = document.documentElement;
-  const isDark = html.classList.toggle('dark');
-  darkBtn.textContent = isDark ? 'Светлая тема' : 'Тёмная тема';
-  localStorage.setItem('dark', isDark ? '1' : '0');
-}
-darkBtn.addEventListener('click', toggleDark);
-
-// Theme palette switching
-document.querySelectorAll('.theme-swatch').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    const theme = this.getAttribute('data-theme-val');
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  });
-});
-
-// Restore saved preferences
 (function() {
-  var savedTheme = localStorage.getItem('theme');
-  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
-  var savedDark = localStorage.getItem('dark');
-  if (savedDark === '1') {
-    document.documentElement.classList.add('dark');
-    darkBtn.textContent = 'Светлая тема';
-  }
+  var burger = document.getElementById('burgerBlue');
+  var close = document.getElementById('closeBlue');
+  var menu = document.getElementById('sideBlue');
+  var overlay = document.getElementById('overlayBlue');
+
+  function open() { menu.classList.add('open'); overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; document.body.style.overflow = 'hidden'; }
+  function closeM() { menu.classList.remove('open'); overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; document.body.style.overflow = ''; }
+
+  burger.addEventListener('click', open);
+  close.addEventListener('click', closeM);
+  overlay.addEventListener('click', closeM);
+  document.querySelectorAll('#sideBlue a').forEach(function(a) { a.addEventListener('click', closeM); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && menu.classList.contains('open')) closeM(); });
 })();
 </script>
 </body>
