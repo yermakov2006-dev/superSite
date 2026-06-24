@@ -23,8 +23,8 @@
   --accent: #f4b83a;
   --accent-dim: rgba(244, 184, 58, 0.3);
   --grid: rgba(42, 122, 176, 0.08);
-  --gutter: 20px;
-  --col-w: 960px;
+  --gutter: 32px;
+  --col-w: 1200px;
 }
 
 [data-theme="dark"] {
@@ -46,7 +46,8 @@ body {
   font-family: 'IBM Plex Mono', monospace;
   background: var(--bg);
   color: var(--fg);
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 15px;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -210,7 +211,7 @@ body::before {
   position: relative;
   border: 2px solid var(--edge);
   background: var(--bg-card);
-  padding: 28px 32px;
+  padding: 36px 40px;
   margin-bottom: var(--gutter);
 }
 
@@ -264,8 +265,8 @@ body::before {
 
 /* ─── HERO ─── */
 .hero-blue {
-  padding: 48px 40px;
-  margin: 24px 0 32px;
+  padding: 64px 48px;
+  margin: 28px 0 40px;
   border: 2px solid var(--edge);
   background: var(--bg-card);
   position: relative;
@@ -296,7 +297,7 @@ body::before {
 }
 
 .hero-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.25em;
@@ -306,7 +307,7 @@ body::before {
 
 .hero-blue h1 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2.8rem, 7vw, 4.8rem);
+  font-size: clamp(3.2rem, 7vw, 5.2rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -320,41 +321,62 @@ body::before {
 }
 
 .hero-desc {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--fg-dim);
-  max-width: 580px;
+  max-width: 640px;
   border-left: 3px solid var(--accent);
   padding-left: 18px;
   margin-top: 16px;
 }
 
+.hero-wire {
+  position: absolute;
+  right: 36px;
+  bottom: 32px;
+  pointer-events: none;
+}
+
+.code-snip {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .hero-wire { display: none; }
+}
+@media (max-width: 750px) {
+  .code-snip { display: none; }
+}
+
 /* ─── SECTION META ─── */
 .sec-tag {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--accent);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .sec-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   color: var(--fg-bright);
 }
 
 .sec-title small {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--fg-dim);
-  margin-top: 4px;
+  margin-top: 6px;
   font-family: 'IBM Plex Mono', monospace;
   letter-spacing: 0;
 }
@@ -363,65 +385,66 @@ body::before {
 .stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 16px;
   margin-top: 16px;
 }
 
 .stat-item {
   border: 1px solid var(--edge-light);
-  padding: 20px;
+  padding: 24px;
   background: rgba(20, 60, 100, 0.15);
-  transition: border .2s;
+  transition: border .2s, background .2s;
 }
 
 .stat-item:hover {
   border-color: var(--edge);
+  background: rgba(20, 60, 100, 0.25);
 }
 
 .stat-label {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--fg-dim);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .stat-value {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--fg-bright);
 }
 
 .stat-note {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--fg-dim);
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 /* ─── SALARY TABLE ─── */
-.st-bl { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.st-bl { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 16px; }
 .st-bl th {
   text-align: left;
-  font-size: 9px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--fg-dim);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-bottom: 2px dashed var(--edge-light);
   font-weight: 600;
 }
-.st-bl td { padding: 10px 12px; border-bottom: 1px dotted var(--edge-light); }
+.st-bl td { padding: 12px 14px; border-bottom: 1px dotted var(--edge-light); }
 .st-bl tr:last-child td { border-bottom: none; }
-.sb-wrap { height: 6px; background: rgba(20, 60, 100, 0.3); overflow: hidden; }
+.sb-wrap { height: 8px; background: rgba(20, 60, 100, 0.3); overflow: hidden; }
 .sb-fill { height: 100%; background: var(--accent); }
 
 /* ─── DUTY GRID ─── */
-.duty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.duty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .duty-card {
   border: 1px solid var(--edge-light);
-  padding: 22px;
+  padding: 28px;
   background: rgba(20, 60, 100, 0.1);
   transition: border .2s, background .2s;
 }
@@ -431,14 +454,14 @@ body::before {
 }
 .duty-num {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 800;
   color: var(--edge);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .duty-card h3 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -448,30 +471,30 @@ body::before {
   color: var(--fg-bright);
 }
 .duty-card p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--fg-dim);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 /* ─── TECH ─── */
-.tech-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.tech-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .tech-col {
   border: 1px solid var(--edge-light);
-  padding: 20px;
+  padding: 24px;
   background: rgba(20, 60, 100, 0.1);
 }
 .tech-col h3 {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--accent);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .tech-col ul { list-style: none; }
 .tech-col li {
-  font-size: 12px;
-  padding: 6px 0;
+  font-size: 13px;
+  padding: 7px 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -486,10 +509,10 @@ body::before {
 .career-l { list-style: none; }
 .career-l li {
   display: flex;
-  gap: 14px;
-  padding: 10px 0;
+  gap: 16px;
+  padding: 12px 0;
   border-bottom: 1px dotted var(--edge-light);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--fg-dim);
 }
 .career-l li:last-child { border-bottom: none; }
@@ -497,33 +520,33 @@ body::before {
   font-weight: 700;
   color: var(--accent);
   flex-shrink: 0;
-  min-width: 60px;
+  min-width: 68px;
 }
 
 /* ─── TRENDS ─── */
 .trend-l { list-style: none; }
 .trend-l li {
   display: flex;
-  gap: 14px;
-  padding: 10px 0;
+  gap: 16px;
+  padding: 12px 0;
   border-bottom: 1px dotted var(--edge-light);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--fg-dim);
 }
 .trend-l li:last-child { border-bottom: none; }
-.trend-lbl { font-weight: 600; color: var(--fg-bright); flex-shrink: 0; min-width: 110px; }
+.trend-lbl { font-weight: 600; color: var(--fg-bright); flex-shrink: 0; min-width: 120px; }
 
 /* ─── FAQ ─── */
 .faq-bp {
   border: 1px solid var(--edge-light);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   background: rgba(20, 60, 100, 0.08);
 }
 .faq-bp[open] { border-color: var(--edge); }
 
 .faq-sum {
-  padding: 12px 16px;
-  font-size: 12px;
+  padding: 14px 20px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--fg-bright);
   cursor: pointer;
@@ -535,46 +558,46 @@ body::before {
   user-select: none;
 }
 .faq-sum::-webkit-details-marker { display: none; }
-.faq-sum::after { content: '+'; font-size: 16px; color: var(--edge); }
+.faq-sum::after { content: '+'; font-size: 18px; color: var(--edge); }
 .faq-bp[open] .faq-sum::after { content: '−'; color: var(--accent); }
 
 .faq-body {
-  padding: 0 16px 12px;
-  font-size: 12px;
+  padding: 0 20px 16px;
+  font-size: 13px;
   color: var(--fg-dim);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 /* ─── RESOURCES ─── */
 .res-blue {
   display: block;
   border: 1px solid var(--edge-light);
-  padding: 14px 18px;
-  margin-bottom: 8px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
   text-decoration: none;
   color: var(--fg-bright);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   background: rgba(20, 60, 100, 0.08);
   transition: all .2s;
 }
 .res-blue:hover {
   border-color: var(--accent-dim);
-  background: rgba(20, 60, 100, 0.2);
-  padding-left: 24px;
+  background: rgba(20, 60, 100, 0.25);
+  padding-left: 28px;
 }
 .res-blue small {
   display: block;
   font-weight: 400;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--fg-dim);
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 /* ─── QUOTE ─── */
 .quote-blue {
   border: 2px solid var(--accent-dim);
-  padding: 36px 32px;
+  padding: 44px 40px;
   margin-bottom: var(--gutter);
   background: rgba(244, 184, 58, 0.04);
   text-align: center;
@@ -601,17 +624,17 @@ body::before {
 .divider-bp {
   height: 1px;
   background: repeating-linear-gradient(90deg, var(--edge) 0, var(--edge) 8px, transparent 8px, transparent 16px);
-  margin: 24px 0;
+  margin: 32px 0;
   border: none;
 }
 
 /* ─── FOOTER ─── */
 .ft-blue {
   border-top: 2px dashed var(--edge);
-  padding: 28px 0;
-  margin-top: 32px;
-  margin-bottom: 40px;
-  font-size: 10px;
+  padding: 32px 0;
+  margin-top: 40px;
+  margin-bottom: 48px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--fg-dim);
@@ -621,15 +644,59 @@ body::before {
   gap: 8px;
 }
 
+/* ─── ANIMATIONS ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseAccent {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-dim); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+.hero-blue { animation: fadeInUp 0.7s ease both; }
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.duty-card:hover .duty-num { animation: pulseAccent 0.8s ease; }
+
+.stat-item:nth-child(1).reveal { transition-delay: 0s; }
+.stat-item:nth-child(2).reveal { transition-delay: 0.08s; }
+.stat-item:nth-child(3).reveal { transition-delay: 0.16s; }
+.stat-item:nth-child(4).reveal { transition-delay: 0.24s; }
+.duty-card:nth-child(1).reveal { transition-delay: 0s; }
+.duty-card:nth-child(2).reveal { transition-delay: 0.08s; }
+.duty-card:nth-child(3).reveal { transition-delay: 0.16s; }
+.duty-card:nth-child(4).reveal { transition-delay: 0.24s; }
+.tech-col:nth-child(1).reveal { transition-delay: 0s; }
+.tech-col:nth-child(2).reveal { transition-delay: 0.1s; }
+.tech-col:nth-child(3).reveal { transition-delay: 0.2s; }
+.faq-bp:nth-child(1).reveal { transition-delay: 0s; }
+.faq-bp:nth-child(2).reveal { transition-delay: 0.06s; }
+.faq-bp:nth-child(3).reveal { transition-delay: 0.12s; }
+.faq-bp:nth-child(4).reveal { transition-delay: 0.18s; }
+.faq-bp:nth-child(5).reveal { transition-delay: 0.24s; }
+.res-blue:nth-child(1).reveal { transition-delay: 0s; }
+.res-blue:nth-child(2).reveal { transition-delay: 0.06s; }
+.res-blue:nth-child(3).reveal { transition-delay: 0.12s; }
+.res-blue:nth-child(4).reveal { transition-delay: 0.18s; }
+.res-blue:nth-child(5).reveal { transition-delay: 0.24s; }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 750px) {
   .stat-grid { grid-template-columns: 1fr; }
   .duty-grid { grid-template-columns: 1fr; }
   .tech-grid { grid-template-columns: 1fr; }
-  .bp-card { padding: 20px; }
-  .hero-blue { padding: 32px 24px; }
+  .bp-card { padding: 24px 20px; }
+  .hero-blue { padding: 40px 24px; }
   .hero-blue::before, .hero-blue::after { display: none; }
   .bp-card-shifted { margin-left: 0; }
+  :root { --gutter: 16px; }
 }
 </style>
 </head>
@@ -670,46 +737,73 @@ body::before {
 
   <!-- HERO -->
   <div class="hero-blue">
-    <p class="hero-label">// SPEC v2.4 — Гайд по профессии</p>
+    <p class="hero-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="width:14px;height:14px;vertical-align:middle;margin-right:6px;"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg> SPEC v2.4 — Гайд по профессии</p>
     <h1><span>FRONTEND</span>РАЗРАБОТЧИК</h1>
     <div class="hero-desc">
       Инженер интерфейсов. Строит то, что вы видите в браузере. Не путать с верстальщиком.
     </div>
+    <div class="hero-wire">
+      <svg viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:160px;height:100px;opacity:0.35;">
+        <rect x="1" y="1" width="158" height="98" rx="4" stroke="var(--edge)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <rect x="10" y="10" width="40" height="12" rx="2" stroke="var(--edge)" stroke-width="1" stroke-dasharray="3 2"/>
+        <rect x="56" y="10" width="50" height="12" rx="2" stroke="var(--edge)" stroke-width="1" stroke-dasharray="3 2"/>
+        <circle cx="130" cy="16" r="4" stroke="var(--accent)" stroke-width="1"/>
+        <rect x="10" y="28" width="60" height="30" rx="2" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2"/>
+        <rect x="76" y="28" width="74" height="30" rx="2" stroke="var(--edge)" stroke-width="1" stroke-dasharray="3 2"/>
+        <rect x="10" y="64" width="120" height="8" rx="2" stroke="var(--edge)" stroke-width="1" stroke-dasharray="3 2"/>
+        <rect x="10" y="78" width="80" height="8" rx="2" stroke="var(--edge)" stroke-width="1" stroke-dasharray="3 2"/>
+      </svg>
+    </div>
   </div>
 
   <!-- ВВЕДЕНИЕ -->
-  <section class="bp-card bp-card-shifted" id="intro">
+  <section class="bp-card bp-card-shifted reveal" id="intro">
     <p class="sec-tag">001 // Введение</p>
     <h2 class="sec-title">Кто это?<small>Определение и границы ответственности</small></h2>
-    <div style="max-width:680px;font-size:13px;color:var(--fg-dim);line-height:1.8;">
+    <div style="max-width:680px;font-size:14px;color:var(--fg-dim);line-height:1.8;">
       <p style="margin-bottom:10px;"><strong style="color:var(--fg-bright);">Frontend-разработчик</strong> — специалист, который реализует пользовательский интерфейс веб-приложения. Он берёт дизайн-макет и превращает его в код, работающий в браузере. В зону ответственности входит: вёрстка, логика интерфейса, работа с данными от сервера, оптимизация загрузки, обеспечение доступности (a11y) и кросс-браузерной совместимости.</p>
       <p>В отличие от <strong style="color:var(--fg-bright);">верстальщика</strong> (который только раскладывает блоки по сетке), фронтенд-разработчик пишет полноценную клиентскую логику: управляет состоянием приложения, обрабатывает пользовательские сценарии, работает с API, настраивает сборку и деплой.</p>
+    </div>
+    <div class="code-snip">
+      <svg viewBox="0 0 200 70" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:200px;height:70px;opacity:0.3;">
+        <rect x="1" y="1" width="198" height="68" rx="3" stroke="var(--edge)" stroke-width="1" stroke-dasharray="3 2"/>
+        <circle cx="12" cy="12" r="2.5" fill="var(--accent)" opacity="0.6"/>
+        <circle cx="22" cy="12" r="2.5" fill="var(--edge)" opacity="0.4"/>
+        <circle cx="32" cy="12" r="2.5" fill="var(--edge)" opacity="0.4"/>
+        <text x="10" y="33" font-family="monospace" font-size="7" fill="var(--fg-dim)">const App = () =&gt; {</text>
+        <text x="14" y="42" font-family="monospace" font-size="7" fill="var(--accent)">  return &lt;div&gt;Hello&lt;/div&gt;</text>
+        <text x="10" y="51" font-family="monospace" font-size="7" fill="var(--fg-dim)">};</text>
+      </svg>
     </div>
   </section>
 
   <hr class="divider-bp"/>
 
   <!-- ЦИФРЫ -->
-  <section class="bp-card" id="market">
+  <section class="bp-card reveal" id="market">
     <p class="sec-tag">002 // Рынок</p>
     <h2 class="sec-title">Цифры и факты<small>Чтобы понимать масштаб</small></h2>
     <div class="stat-grid">
-      <div class="stat-item">
+      <div class="stat-item reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="width:20px;height:20px;margin-bottom:8px;"><path d="M4 7h16M4 7v12a2 2 0 002 2h12a2 2 0 002-2V7M4 7l2-3h12l2 3"/><path d="M9 11h6"/></svg>
         <p class="stat-label">Вакансий на hh.ru</p>
         <p class="stat-value">~12 000</p>
         <p class="stat-note">Ежемесячно открытых позиций (2025–2026)</p>
       </div>
-      <div class="stat-item">
+      <div class="stat-item reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="width:20px;height:20px;margin-bottom:8px;"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
         <p class="stat-label">Медианная зарплата</p>
         <p class="stat-value">220 000 ₽</p>
         <p class="stat-note">Middle+ / Senior, Москва (Хабр Карьера)</p>
       </div>
-      <div class="stat-item">
+      <div class="stat-item reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="width:20px;height:20px;margin-bottom:8px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <p class="stat-label">React используют</p>
         <p class="stat-value">82%</p>
         <p class="stat-note">Опрошенных разработчиков (State of JS 2024)</p>
       </div>
-      <div class="stat-item">
+      <div class="stat-item reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="width:20px;height:20px;margin-bottom:8px;"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         <p class="stat-label">До Middle</p>
         <p class="stat-value">~3.5 года</p>
         <p class="stat-note">Среднее время роста</p>
@@ -720,7 +814,7 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- ЗАРПЛАТЫ -->
-  <section class="bp-card bp-card-shifted" id="salary">
+  <section class="bp-card bp-card-shifted reveal" id="salary">
     <p class="sec-tag">002 // Компенсация</p>
     <h2 class="sec-title">Зарплаты по грейдам<small>Москва, ₽, медиана 2025</small></h2>
     <div class="overflow-x-auto" style="overflow-x:auto;">
@@ -741,26 +835,26 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- ОБЯЗАННОСТИ -->
-  <section class="bp-card" id="duties">
+  <section class="bp-card reveal" id="duties">
     <p class="sec-tag">003 // Обязанности</p>
     <h2 class="sec-title">Что реально делает?<small>Не «пишет код», а решает проблемы</small></h2>
     <div class="duty-grid">
-      <div class="duty-card">
+      <div class="duty-card reveal">
         <p class="duty-num">[01]</p>
         <h3>Строит интерфейсы</h3>
         <p>Собирает приложение из компонентов. Управляет состоянием (Redux, Zustand, Pinia или signals). Настраивает роутинг. Мемоизация, виртуализация списков, оптимизация ре-рендеров.</p>
       </div>
-      <div class="duty-card">
+      <div class="duty-card reveal">
         <p class="duty-num">[02]</p>
         <h3>Работает с данными</h3>
         <p>Ходит в API (REST / GraphQL), кеширует ответы (React Query / SWR / Apollo), обновляет через WebSocket или SSE. Обрабатывает ошибки, ретраи, optimistic updates.</p>
       </div>
-      <div class="duty-card">
+      <div class="duty-card reveal">
         <p class="duty-num">[03]</p>
         <h3>Оптимизирует</h3>
         <p>Следит за Core Web Vitals: LCP, CLS, INP. Дробит бандл через code splitting, ленивая загрузка, WebP/AVIF, Service Worker кеширование.</p>
       </div>
-      <div class="duty-card">
+      <div class="duty-card reveal">
         <p class="duty-num">[04]</p>
         <h3>Обеспечивает качество</h3>
         <p>Тесты: Vitest, Testing Library, Playwright. Линтеры, code review, доступность: семантика, aria, клавиатура, WCAG 2.1 AA.</p>
@@ -771,11 +865,11 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- СТЕК -->
-  <section class="bp-card bp-card-shifted" id="stack">
+  <section class="bp-card bp-card-shifted reveal" id="stack">
     <p class="sec-tag">004 // Стек</p>
     <h2 class="sec-title">Технологии<small>Языки, фреймворки, инструменты</small></h2>
     <div class="tech-grid">
-      <div class="tech-col">
+      <div class="tech-col reveal">
         <h3>Языки</h3>
         <ul>
           <li><span class="t-dot filled"></span>JavaScript (ES2024+)</li>
@@ -784,7 +878,7 @@ body::before {
           <li><span class="t-dot filled"></span>CSS3 (Grid, Container Queries)</li>
         </ul>
       </div>
-      <div class="tech-col">
+      <div class="tech-col reveal">
         <h3>Фреймворки</h3>
         <ul>
           <li><span class="t-dot filled"></span>React 19 + Next.js / Remix</li>
@@ -793,7 +887,7 @@ body::before {
           <li><span class="t-dot filled"></span>Svelte 5 + SvelteKit</li>
         </ul>
       </div>
-      <div class="tech-col">
+      <div class="tech-col reveal">
         <h3>Инфраструктура</h3>
         <ul>
           <li><span class="t-dot filled"></span>Vite (стандарт сборки)</li>
@@ -808,7 +902,7 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- КАРЬЕРА -->
-  <section class="bp-card" id="career">
+  <section class="bp-card reveal" id="career">
     <p class="sec-tag">005 // Карьера</p>
     <h2 class="sec-title">Путь в профессии<small>От джуна до лида — что меняется</small></h2>
     <ul class="career-l">
@@ -822,7 +916,7 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- ТРЕНДЫ -->
-  <section class="bp-card bp-card-shifted" id="trends">
+  <section class="bp-card bp-card-shifted reveal" id="trends">
     <p class="sec-tag">006 // Тренды</p>
     <h2 class="sec-title">Что прямо сейчас<small>Куда движется индустрия</small></h2>
     <ul class="trend-l">
@@ -837,26 +931,26 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- FAQ -->
-  <section class="bp-card" id="faq">
+  <section class="bp-card reveal" id="faq">
     <p class="sec-tag">007 // Мифы и FAQ</p>
     <h2 class="sec-title">Чего не надо говорить<small>Популярные заблуждения и ответы</small></h2>
-    <details class="faq-bp" open>
+    <details class="faq-bp reveal" open>
       <summary class="faq-sum">«Фронтенд — это же просто вёрстка»</summary>
       <div class="faq-body">Фронтенд включает управление состоянием, оптимизацию производительности, тестирование, CI/CD. Вёрстка — 20–30% работы.</div>
     </details>
-    <details class="faq-bp">
+    <details class="faq-bp reveal">
       <summary class="faq-sum">«Можно без математики»</summary>
       <div class="faq-body">Анимации, алгоритмы поиска/фильтрации, O(n), canvas, WebGL — математика нужна регулярно.</div>
     </details>
-    <details class="faq-bp">
+    <details class="faq-bp reveal">
       <summary class="faq-sum">«Все фреймворки — одно и то же»</summary>
       <div class="faq-body">React — библиотека без мнения. Vue — фреймворк с магией. Svelte — компилятор. Solid — без виртуального DOM.</div>
     </details>
-    <details class="faq-bp">
+    <details class="faq-bp reveal">
       <summary class="faq-sum">«Достаточно знать React»</summary>
       <div class="faq-body">React — инструмент. Без DOM, HTTP, accessibility, бандлинга — вы просто пользователь API.</div>
     </details>
-    <details class="faq-bp">
+    <details class="faq-bp reveal">
       <summary class="faq-sum">«AI скоро заменит фронтендеров»</summary>
       <div class="faq-body">AI ускоряет код, но не архитектуру, не компромиссы, не пользовательский опыт.</div>
     </details>
@@ -865,26 +959,26 @@ body::before {
   <hr class="divider-bp"/>
 
   <!-- РЕСУРСЫ -->
-  <section class="bp-card bp-card-shifted" id="resources">
+  <section class="bp-card bp-card-shifted reveal" id="resources">
     <p class="sec-tag">008 // Ресурсы</p>
     <h2 class="sec-title">Что читать и смотреть<small>Проверенные источники для роста</small></h2>
-    <a class="res-blue" href="https://developer.mozilla.org" target="_blank">MDN Web Docs<small>Главная документация — читать каждый день</small></a>
-    <a class="res-blue" href="https://roadmap.sh/frontend" target="_blank">roadmap.sh / frontend<small>Визуальная карта технологий</small></a>
-    <a class="res-blue" href="https://web.dev" target="_blank">web.dev<small>Core Web Vitals от Google</small></a>
-    <a class="res-blue" href="https://kentcdodds.com" target="_blank">Kent C. Dodds<small>React, Testing, Epic React</small></a>
-    <a class="res-blue" href="https://www.joshwcomeau.com" target="_blank">Josh W. Comeau<small>CSS, React, анимации</small></a>
+    <a class="res-blue reveal" href="https://developer.mozilla.org" target="_blank">MDN Web Docs<small>Главная документация — читать каждый день</small></a>
+    <a class="res-blue reveal" href="https://roadmap.sh/frontend" target="_blank">roadmap.sh / frontend<small>Визуальная карта технологий</small></a>
+    <a class="res-blue reveal" href="https://web.dev" target="_blank">web.dev<small>Core Web Vitals от Google</small></a>
+    <a class="res-blue reveal" href="https://kentcdodds.com" target="_blank">Kent C. Dodds<small>React, Testing, Epic React</small></a>
+    <a class="res-blue reveal" href="https://www.joshwcomeau.com" target="_blank">Josh W. Comeau<small>CSS, React, анимации</small></a>
   </section>
 
   <hr class="divider-bp"/>
 
   <!-- ЦИТАТА -->
-  <div class="quote-blue">
+  <div class="quote-blue reveal">
     <blockquote>Фронтенд — единственная область разработки, где твой код видит миллион человек, но замечают только когда он сломан.</blockquote>
     <cite>— Из разговора продакта с фронтендером</cite>
   </div>
 
   <footer class="ft-blue">
-    <span>Frontend Developer Guide // BP v2.4</span>
+    <span>Frontend Developer Guide // BP v3.0</span>
     <span>State of JS 2024 · Хабр Карьера 2025</span>
   </footer>
 
@@ -917,6 +1011,14 @@ body::before {
   darkBtn.addEventListener('click', toggleDark);
   var saved = localStorage.getItem('blueprint-theme');
   if (saved === 'dark') { html.setAttribute('data-theme', 'dark'); darkBtn.textContent = '☀ Светлая'; }
+
+  /* ─── SCROLL REVEAL ─── */
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 })();
 </script>
 </body>
