@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Frontend Developer Guide — Visual Studio style</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f5f6f8;
+  --bg-card: #ffffff;
+  --fg: #1a1a1a;
+  --fg-secondary: #5a5a5a;
+  --fg-muted: #8a8a8a;
+  --accent: #0066b4;
+  --accent-hover: #004d8a;
+  --accent-light: #e6f0fa;
+  --border: #e0e0e0;
+  --border-light: #f0f0f0;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-hover: 0 8px 30px rgba(0,0,0,0.1);
+  --radius: 8px;
+  --max-w: 1200px;
+  --gutter: 24px;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAV ─── */
+.nav-vs {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.96);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.nav-vs-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-vs-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.nav-vs-logo svg { flex-shrink: 0; }
+
+.nav-vs-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-vs-links a {
+  color: var(--fg-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color .15s;
+}
+
+.nav-vs-links a:hover { color: var(--accent); }
+
+.nav-vs-actions { display: flex; gap: 12px; align-items: center; }
+
+.btn-vs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  line-height: 1;
+  transition: background .15s, transform .1s;
+}
+
+.btn-vs:active { transform: scale(0.97); }
+
+.btn-vs-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-vs-primary:hover { background: var(--accent-hover); }
+
+.btn-vs-outline {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+.btn-vs-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── HERO ─── */
+.hero-vs {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 80px var(--gutter) 60px;
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-vs-text { flex: 1; min-width: 0; }
+
+.hero-vs-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.hero-vs h1 {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  color: var(--fg);
+}
+
+.hero-vs h1 span { color: var(--accent); }
+
+.hero-vs p {
+  font-size: 18px;
+  color: var(--fg-secondary);
+  max-width: 540px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.hero-vs-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-vs-image {
+  flex: 0 0 520px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  background: #1e1e1e;
+}
+
+.hero-vs-image svg { width: 100%; height: auto; display: block; }
+
+/* ─── SECTIONS ─── */
+.section-vs {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 80px var(--gutter);
+}
+
+.section-vs-alt {
+  background: var(--bg-alt);
+}
+
+.section-vs-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 80px var(--gutter);
+}
+
+.section-vs-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.section-vs h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--fg);
+}
+
+.section-vs > .section-vs-sub,
+.section-vs-inner > .section-vs-sub {
+  font-size: 17px;
+  color: var(--fg-secondary);
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+
+/* ─── FEATURE GRID ─── */
+.feat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.feat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  transition: box-shadow .2s, transform .2s;
+  cursor: default;
+}
+
+.feat-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.feat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.feat-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+.feat-icon.filled svg { fill: var(--accent); }
+
+.feat-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--fg);
+}
+
+.feat-card p {
+  font-size: 14px;
+  color: var(--fg-secondary);
+  line-height: 1.7;
+}
+
+/* ─── TWO-COL LAYOUT ─── */
+.two-col {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+}
+
+.two-col-text { flex: 1; min-width: 0; }
+
+.two-col-text h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--fg);
+}
+
+.two-col-text p {
+  font-size: 16px;
+  color: var(--fg-secondary);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.two-col-image {
+  flex: 0 0 480px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: #1e1e1e;
+}
+
+.two-col-image svg { width: 100%; height: auto; display: block; }
+
+/* ─── STATS / NUMBERS ─── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 32px 16px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.stat-num {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label { font-size: 14px; color: var(--fg-secondary); }
+
+/* ─── TESTIMONIAL ─── */
+.testimonial-vs {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 80px var(--gutter);
+  text-align: center;
+}
+
+.testimonial-vs blockquote {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-weight: 500;
+  color: var(--fg);
+  max-width: 720px;
+  margin: 0 auto 20px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.testimonial-vs cite {
+  font-style: normal;
+  color: var(--fg-secondary);
+  font-size: 14px;
+}
+
+/* ─── PRICING / DOWNLOAD ─── */
+.dl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.dl-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  text-align: center;
+  transition: box-shadow .2s;
+  background: var(--bg-card);
+}
+
+.dl-card:hover { box-shadow: var(--shadow-hover); }
+
+.dl-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dl-card .price {
+  font-size: 14px;
+  color: var(--fg-secondary);
+  margin-bottom: 20px;
+}
+
+.dl-card ul {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.dl-card li {
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--fg-secondary);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.dl-card li::before {
+  content: '✓';
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.dl-card .btn-vs { width: 100%; justify-content: center; }
+
+.dl-card.featured {
+  border-color: var(--accent);
+  position: relative;
+}
+
+.dl-card.featured::before {
+  content: 'POPULAR';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 16px;
+  border-radius: 20px;
+}
+
+/* ─── TABLE ─── */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-muted);
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--border);
+}
+table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--fg-secondary);
+}
+table td:first-child { font-weight: 600; color: var(--fg); }
+table tr:last-child td { border-bottom: none; }
+
+/* ─── FAQ ─── */
+.faq-vs-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.faq-vs-item[open] { border-color: var(--accent); }
+
+.faq-vs-sum {
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--fg);
+  user-select: none;
+}
+
+.faq-vs-sum::-webkit-details-marker { display: none; }
+.faq-vs-sum::after { content: '+'; font-size: 20px; color: var(--accent); transition: transform .2s; }
+.faq-vs-item[open] .faq-vs-sum::after { content: '−'; }
+
+.faq-vs-body {
+  padding: 0 20px 18px;
+  font-size: 15px;
+  color: var(--fg-secondary);
+  line-height: 1.7;
+}
+
+/* ─── RESOURCES LIST ─── */
+.res-vs {
+  display: block;
+  padding: 18px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  transition: border-color .15s, box-shadow .15s;
+  background: var(--bg-card);
+}
+
+.res-vs:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.res-vs small {
+  display: block;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--fg-secondary);
+  margin-top: 2px;
+}
+
+/* ─── FOOTER ─── */
+.ft-vs {
+  background: #1a1a1a;
+  color: #ccc;
+  padding: 48px 0 32px;
+  margin-top: 60px;
+}
+
+.ft-vs-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.ft-vs-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.ft-vs-col h4 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.ft-vs-col a {
+  display: block;
+  color: #999;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 0;
+  transition: color .15s;
+}
+
+.ft-vs-col a:hover { color: #fff; }
+
+.ft-vs-bottom {
+  border-top: 1px solid #333;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* ─── DIVIDER ─── */
+.divider-vs {
+  height: 1px;
+  background: var(--border);
+  border: none;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+/* ─── CAREER LIST ─── */
+.career-vs { list-style: none; }
+.career-vs li {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 15px;
+  color: var(--fg-secondary);
+}
+.career-vs li:last-child { border-bottom: none; }
+.career-vs-m {
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+/* ─── TREND LIST ─── */
+.trend-vs { list-style: none; }
+.trend-vs li {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 15px;
+  color: var(--fg-secondary);
+}
+.trend-vs li:last-child { border-bottom: none; }
+.trend-vs-lbl { font-weight: 600; color: var(--fg); flex-shrink: 0; min-width: 150px; }
+
+/* ─── TECH DOTS ─── */
+.tech-vs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.tech-vs-col {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  background: var(--bg-card);
+}
+.tech-vs-col h3 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.tech-vs-col ul { list-style: none; }
+.tech-vs-col li {
+  font-size: 14px;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--fg-secondary);
+}
+.tech-vs-col li:last-child { border-bottom: none; }
+.t-dot-vs { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.t-dot-vs.filled { background: var(--accent); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal-vs {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-vs.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-vs { animation: fadeUp 0.6s ease both; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .hero-vs { flex-direction: column; padding: 48px 16px 32px; }
+  .hero-vs-image { flex: none; width: 100%; }
+  .nav-vs-links { display: none; }
+  .two-col { flex-direction: column; }
+  .two-col-image { flex: none; width: 100%; }
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .dl-grid { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .ft-vs-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 750px) {
+  .feat-grid { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: 1fr; }
+  .ft-vs-top { grid-template-columns: 1fr; }
+  .tech-vs-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav-vs">
+  <div class="nav-vs-inner">
+    <a href="#" class="nav-vs-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="4" fill="#0066b4"/><polygon points="8,6 20,14 8,22" fill="#fff" opacity="0.9"/></svg>
+      Frontend Guide
+    </a>
+    <ul class="nav-vs-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#career">Career</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-vs-actions">
+      <button class="btn-vs btn-vs-outline" id="themeToggle">☀</button>
+      <a href="#resources" class="btn-vs btn-vs-primary">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-vs">
+  <div class="hero-vs-text">
+    <div class="hero-vs-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      v3.0 — Updated 2026
+    </div>
+    <h1>Frontend<br/><span>Developer Guide</span></h1>
+    <p>Всё, что нужно знать о профессии: стек, обязанности, карьерный путь, зарплаты и тренды. От джуна до лида.</p>
+    <div class="hero-vs-actions">
+      <a href="#features" class="btn-vs btn-vs-primary">Explore features →</a>
+      <a href="#stack" class="btn-vs btn-vs-outline">View tech stack</a>
+    </div>
+  </div>
+  <div class="hero-vs-image">
+    <svg viewBox="0 0 520 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="520" height="300" fill="#1e1e1e"/>
+      <rect x="0" y="0" width="520" height="32" fill="#2d2d2d"/>
+      <circle cx="16" cy="16" r="5" fill="#ff5f5f"/>
+      <circle cx="32" cy="16" r="5" fill="#ffbd2e"/>
+      <circle cx="48" cy="16" r="5" fill="#28c840"/>
+      <rect x="0" y="32" width="44" height="268" fill="#252526"/>
+      <rect x="8" y="42" width="28" height="4" rx="2" fill="#0066b4"/>
+      <rect x="8" y="52" width="22" height="4" rx="2" fill="#3a3a3a"/>
+      <rect x="8" y="62" width="26" height="4" rx="2" fill="#3a3a3a"/>
+      <rect x="8" y="76" width="30" height="4" rx="2" fill="#0066b4"/>
+      <rect x="8" y="86" width="20" height="4" rx="2" fill="#3a3a3a"/>
+      <rect x="8" y="96" width="24" height="4" rx="2" fill="#3a3a3a"/>
+      <text x="60" y="54" font-family="monospace" font-size="10" fill="#858585">import { useState } from 'react'</text>
+      <text x="60" y="68" font-family="monospace" font-size="10" fill="#858585">import { render } from 'react-dom'</text>
+      <text x="60" y="82" font-family="monospace" font-size="10" fill="#858585" opacity="0.5">// Application entry point</text>
+      <text x="60" y="96" font-family="monospace" font-size="10" fill="#d4d4d4">const <tspan fill="#569cd6">App</tspan> = () =&gt; {</text>
+      <text x="60" y="110" font-family="monospace" font-size="10" fill="#858585">  const [count, setCount] = <tspan fill="#dcdcaa">useState</tspan>(0)</text>
+      <text x="60" y="124" font-family="monospace" font-size="10" fill="#d4d4d4">  return (</text>
+      <text x="60" y="138" font-family="monospace" font-size="10" fill="#858585">    &lt;div className="<tspan fill="#ce9178">app</tspan>"&gt;</text>
+      <text x="60" y="152" font-family="monospace" font-size="10" fill="#858585">      &lt;h1&gt;Hello, World&lt;/h1&gt;</text>
+      <text x="60" y="166" font-family="monospace" font-size="10" fill="#858585">      &lt;p&gt;Count: {count}&lt;/p&gt;</text>
+      <text x="60" y="180" font-family="monospace" font-size="10" fill="#858585">      &lt;button onClick={...}&gt;+1&lt;/button&gt;</text>
+      <text x="60" y="194" font-family="monospace" font-size="10" fill="#858585">    &lt;/div&gt;</text>
+      <text x="60" y="208" font-family="monospace" font-size="10" fill="#d4d4d4">  )</text>
+      <text x="60" y="222" font-family="monospace" font-size="10" fill="#d4d4d4">}</text>
+      <text x="60" y="242" font-family="monospace" font-size="10" fill="#858585"><tspan fill="#569cd6">render</tspan>(&lt;App /&gt;, document.getElementById('root'))</text>
+      <rect x="60" y="252" width="200" height="2" fill="#0066b4" opacity="0.4"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══ FEATURES ═══ -->
+<div class="section-vs-alt" id="features">
+  <div class="section-vs-inner">
+    <p class="section-vs-label">Capabilities</p>
+    <h2>Everything you need to build modern web apps</h2>
+    <p class="section-vs-sub">From responsive layouts to state management — full coverage of the frontend landscape.</p>
+    <div class="feat-grid">
+      <div class="feat-card reveal-vs">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3>Пользовательские интерфейсы</h3>
+        <p>Собираем приложения из компонентов, React / Vue / Svelte, управляем состоянием, настраиваем роутинг.</p>
+      </div>
+      <div class="feat-card reveal-vs">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Данные и API</h3>
+        <p>REST / GraphQL, кеширование, WebSocket, optimistic updates. Любой протокол на клиенте.</p>
+      </div>
+      <div class="feat-card reveal-vs">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3>Производительность</h3>
+        <p>Core Web Vitals, code splitting, lazy loading, WebP/AVIF, Service Worker — Zero Effort™.</p>
+      </div>
+      <div class="feat-card reveal-vs">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <h3>Тестирование</h3>
+        <p>Vitest, Testing Library, Playwright. CI/CD, линтеры, code review, accessibility (WCAG AA).</p>
+      </div>
+      <div class="feat-card reveal-vs">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+        <h3>Tooling</h3>
+        <p>Vite, ESLint, Prettier, Husky, lint-staged, Module Federation, Turbopack. Современная сборка.</p>
+      </div>
+      <div class="feat-card reveal-vs">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <h3>CI/CD и деплой</h3>
+        <p>Git, GitHub Actions, Vercel, Netlify, Docker. От коммита до продакшна за минуты.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="section-vs">
+  <p class="section-vs-label">Market Data</p>
+  <h2>Фронтенд в цифрах</h2>
+  <p class="section-vs-sub">Статистика рынка и индустрии — чтобы понимать масштаб.</p>
+  <div class="stat-row">
+    <div class="stat-card reveal-vs">
+      <p class="stat-num">12 000</p>
+      <p class="stat-label">Вакансий / мес</p>
+    </div>
+    <div class="stat-card reveal-vs">
+      <p class="stat-num">220k ₽</p>
+      <p class="stat-label">Медиана Middle+</p>
+    </div>
+    <div class="stat-card reveal-vs">
+      <p class="stat-num">82%</p>
+      <p class="stat-label">Используют React</p>
+    </div>
+    <div class="stat-card reveal-vs">
+      <p class="stat-num">3.5 г</p>
+      <p class="stat-label">До Middle</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SALARY TABLE ═══ -->
+<div class="section-vs-alt">
+  <div class="section-vs-inner">
+    <p class="section-vs-label">Compensation</p>
+    <h2>Зарплаты по грейдам</h2>
+    <p class="section-vs-sub">Москва, ₽, медиана 2025. Данные Хабр Карьеры.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Уровень</th><th>Медиана</th><th>Вилка</th><th>Нагрузка рынка</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Junior</td><td>90 000</td><td>60–120k</td><td><div style="height:8px;width:20%;background:var(--accent);border-radius:4px;"></div></td></tr>
+          <tr><td>Middle</td><td>220 000</td><td>150–300k</td><td><div style="height:8px;width:55%;background:var(--accent);border-radius:4px;"></div></td></tr>
+          <tr><td>Senior</td><td>400 000</td><td>300–600k</td><td><div style="height:8px;width:85%;background:var(--accent);border-radius:4px;"></div></td></tr>
+          <tr><td>Lead</td><td>550 000</td><td>400–700k+</td><td><div style="height:8px;width:100%;background:var(--accent);border-radius:4px;"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DUTIES + CODE ═══ -->
+<div class="section-vs" id="stack">
+  <p class="section-vs-label">Duties</p>
+  <h2>Что реально делает фронтендер?</h2>
+  <p class="section-vs-sub">Не «пишет код», а решает проблемы бизнеса и пользователей.</p>
+  <div class="two-col">
+    <div class="two-col-text">
+      <h3>Build. Ship. Repeat.</h3>
+      <p>Собирает интерфейсы из компонентов. Работает с данными через API. Оптимизирует загрузку. Обеспечивает качество тестами и код-ревью.</p>
+      <p>Фронтенд — это не про «натянуть дизайн». Это про архитектуру, состояние, производительность и пользовательский опыт.</p>
+    </div>
+    <div class="two-col-image">
+      <svg viewBox="0 0 480 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="240" fill="#1e1e1e"/>
+        <rect x="0" y="0" width="480" height="26" fill="#2d2d2d"/>
+        <circle cx="12" cy="13" r="4" fill="#ff5f5f"/>
+        <circle cx="24" cy="13" r="4" fill="#ffbd2e"/>
+        <circle cx="36" cy="13" r="4" fill="#28c840"/>
+        <text x="52" y="17" font-family="monospace" font-size="8" fill="#858585">duties.js — npm test</text>
+        <text x="12" y="44" font-family="monospace" font-size="9" fill="#858585">describe('<tspan fill="#dcdcaa">Frontend</tspan>', () =&gt; {</text>
+        <text x="12" y="60" font-family="monospace" font-size="9" fill="#858585">  it('<tspan fill="#ce9178">builds UI</tspan>', () =&gt; {</text>
+        <text x="24" y="76" font-family="monospace" font-size="9" fill="#858585">const app = <tspan fill="#569cd6">render</tspan>(&lt;App /&gt;)</text>
+        <text x="24" y="92" font-family="monospace" font-size="9" fill="#858585"><tspan fill="#569cd6">expect</tspan>(app).<tspan fill="#dcdcaa">toBeTruthy</tspan>()</text>
+        <text x="12" y="108" font-family="monospace" font-size="9" fill="#858585">  })</text>
+        <text x="12" y="124" font-family="monospace" font-size="9" fill="#858585">  it('<tspan fill="#ce9178">handles data</tspan>', async () =&gt; {</text>
+        <text x="24" y="140" font-family="monospace" font-size="9" fill="#858585">const res = <tspan fill="#569cd6">await</tspan> <tspan fill="#dcdcaa">fetchData</tspan>()</text>
+        <text x="24" y="156" font-family="monospace" font-size="9" fill="#858585"><tspan fill="#569cd6">expect</tspan>(res).<tspan fill="#dcdcaa">toHaveLength</tspan>(42)</text>
+        <text x="12" y="172" font-family="monospace" font-size="9" fill="#858585">  })</text>
+        <text x="12" y="192" font-family="monospace" font-size="9" fill="#28c840">  PASS  src/duties.test.js (3.2s)</text>
+        <text x="12" y="210" font-family="monospace" font-size="9" fill="#858585">  Tests: 42 passed, 42 total</text>
+        <rect x="12" y="220" width="120" height="2" fill="#28c840" opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TECH STACK ═══ -->
+<div class="section-vs-alt">
+  <div class="section-vs-inner">
+    <p class="section-vs-label">Technologies</p>
+    <h2>Современный стек</h2>
+    <p class="section-vs-sub">Языки, фреймворки и инструменты, которые составляют основу фронтенда.</p>
+    <div class="tech-vs-grid">
+      <div class="tech-vs-col reveal-vs">
+        <h3>Языки</h3>
+        <ul>
+          <li><span class="t-dot-vs filled"></span>JavaScript (ES2024+)</li>
+          <li><span class="t-dot-vs filled"></span>TypeScript</li>
+          <li><span class="t-dot-vs"></span>HTML5 + A11y</li>
+          <li><span class="t-dot-vs filled"></span>CSS3 (Grid, Container)</li>
+        </ul>
+      </div>
+      <div class="tech-vs-col reveal-vs">
+        <h3>Фреймворки</h3>
+        <ul>
+          <li><span class="t-dot-vs filled"></span>React 19 + Next.js</li>
+          <li><span class="t-dot-vs filled"></span>Vue 3 + Nuxt</li>
+          <li><span class="t-dot-vs"></span>Angular 17+</li>
+          <li><span class="t-dot-vs filled"></span>Svelte 5 + SvelteKit</li>
+        </ul>
+      </div>
+      <div class="tech-vs-col reveal-vs">
+        <h3>Инфраструктура</h3>
+        <ul>
+          <li><span class="t-dot-vs filled"></span>Vite</li>
+          <li><span class="t-dot-vs"></span>Tailwind CSS</li>
+          <li><span class="t-dot-vs filled"></span>ESLint + Prettier</li>
+          <li><span class="t-dot-vs filled"></span>Husky + lint-staged</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CAREER ═══ -->
+<div class="section-vs" id="career">
+  <p class="section-vs-label">Career Path</p>
+  <h2>От джуна до лида</h2>
+  <p class="section-vs-sub">Что меняется на каждом этапе и сколько это стоит.</p>
+  <div class="two-col">
+    <div class="two-col-text">
+      <ul class="career-vs">
+        <li><span class="career-vs-m">Junior</span><span>Вёрстка по Figma, простые компоненты, JS + один фреймворк. Нужен код-ревью. 0–1.5 года. 60–120k.</span></li>
+        <li><span class="career-vs-m">Middle</span><span>Уверенный фреймворк, сборка, тесты, ревью. Понимает SSR vs SPA vs SSG. 1.5–5 лет. 150–300k.</span></li>
+        <li><span class="career-vs-m">Senior</span><span>Архитектура, стек, performance. Участвует в планировании. Знает бэкенд. 5+ лет. 300–600k+.</span></li>
+        <li><span class="career-vs-m">Lead</span><span>Управляет командой, нанимает, процессы. Код — в основном ревью и прототипы.</span></li>
+      </ul>
+    </div>
+    <div class="two-col-image" style="background:#1a1a1a;padding:20px;">
+      <svg viewBox="0 0 440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="30" font-family="monospace" font-size="9" fill="#858585">career-path — profile</text>
+        <rect x="20" y="44" width="60" height="22" rx="4" fill="#0066b4" opacity="0.3"/>
+        <text x="32" y="59" font-family="monospace" font-size="8" fill="#fff">Junior</text>
+        <line x1="84" y1="55" x2="100" y2="55" stroke="#3a3a3a" stroke-width="2" stroke-dasharray="4 2"/>
+        <rect x="104" y="44" width="70" height="22" rx="4" fill="#0066b4" opacity="0.5"/>
+        <text x="118" y="59" font-family="monospace" font-size="8" fill="#fff">Middle</text>
+        <line x1="178" y1="55" x2="194" y2="55" stroke="#3a3a3a" stroke-width="2" stroke-dasharray="4 2"/>
+        <rect x="198" y="44" width="70" height="22" rx="4" fill="#0066b4" opacity="0.7"/>
+        <text x="210" y="59" font-family="monospace" font-size="8" fill="#fff">Senior</text>
+        <line x1="272" y1="55" x2="288" y2="55" stroke="#3a3a3a" stroke-width="2" stroke-dasharray="4 2"/>
+        <rect x="292" y="44" width="60" height="22" rx="4" fill="#0066b4"/>
+        <text x="304" y="59" font-family="monospace" font-size="8" fill="#fff">Lead</text>
+        <text x="20" y="98" font-family="monospace" font-size="8" fill="#858585">skills: {</text>
+        <text x="28" y="112" font-family="monospace" font-size="8" fill="#858585">code: <tspan fill="#569cd6">Expert</tspan>,</text>
+        <text x="28" y="126" font-family="monospace" font-size="8" fill="#858585">mentoring: <tspan fill="#569cd6">Advanced</tspan>,</text>
+        <text x="28" y="140" font-family="monospace" font-size="8" fill="#858585">architecture: <tspan fill="#569cd6">Expert</tspan>,</text>
+        <text x="20" y="154" font-family="monospace" font-size="8" fill="#858585">team: 4–8 engineers</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TRENDS ═══ -->
+<div class="section-vs-alt">
+  <div class="section-vs-inner">
+    <p class="section-vs-label">Trends</p>
+    <h2>Куда движется индустрия</h2>
+    <p class="section-vs-sub">Ключевые направления, которые определяют будущее фронтенда.</p>
+    <ul class="trend-vs">
+      <li><span class="trend-vs-lbl">Server Components</span><span>React Server Components: часть компонентов рендерится на сервере. Меньше JS на клиенте, быстрее загрузка.</span></li>
+      <li><span class="trend-vs-lbl">AI в интерфейсе</span><span>Чат-интерфейсы, AI-автодополнение, генерация UI по промпту. Stream через SSE.</span></li>
+      <li><span class="trend-vs-lbl">WebGPU</span><span>API для вычислений на GPU в браузере. 3D-графика, симуляции, ML-инференс.</span></li>
+      <li><span class="trend-vs-lbl">Меньше JS</span><span>Island architecture (Astro), partial hydration (Qwik), компилируемые фреймворки.</span></li>
+    </ul>
+    <p style="font-size:13px;color:var(--fg-muted);border-top:1px solid var(--border);padding-top:16px;margin-top:16px;"><strong>Источники:</strong> State of JS 2024, HTTP Archive, Web Almanac, JetBrains.</p>
+  </div>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<div class="section-vs" id="faq">
+  <p class="section-vs-label">FAQ</p>
+  <h2>Чего не надо говорить</h2>
+  <p class="section-vs-sub">Популярные заблуждения о профессии и развёрнутые ответы.</p>
+  <details class="faq-vs-item reveal-vs" open>
+    <summary class="faq-vs-sum">«Фронтенд — это же просто вёрстка»</summary>
+    <div class="faq-vs-body">Фронтенд включает управление состоянием, оптимизацию производительности, тестирование, CI/CD. Вёрстка — 20–30% работы.</div>
+  </details>
+  <details class="faq-vs-item reveal-vs">
+    <summary class="faq-vs-sum">«Можно без математики»</summary>
+    <div class="faq-vs-body">Анимации, алгоритмы поиска/фильтрации, O(n), canvas, WebGL — математика нужна регулярно.</div>
+  </details>
+  <details class="faq-vs-item reveal-vs">
+    <summary class="faq-vs-sum">«Все фреймворки — одно и то же»</summary>
+    <div class="faq-vs-body">React — библиотека без мнения. Vue — фреймворк с магией. Svelte — компилятор. Solid — без виртуального DOM.</div>
+  </details>
+  <details class="faq-vs-item reveal-vs">
+    <summary class="faq-vs-sum">«Достаточно знать React»</summary>
+    <div class="faq-vs-body">React — инструмент. Без DOM, HTTP, accessibility, бандлинга — вы просто пользователь API.</div>
+  </details>
+  <details class="faq-vs-item reveal-vs">
+    <summary class="faq-vs-sum">«AI скоро заменит фронтендеров»</summary>
+    <div class="faq-vs-body">AI ускоряет код, но не архитектуру, не компромиссы, не пользовательский опыт.</div>
+  </details>
+</div>
+
+<!-- ═══ RESOURCES ═══ -->
+<div class="section-vs-alt">
+  <div class="section-vs-inner">
+    <p class="section-vs-label">Resources</p>
+    <h2>Что читать и смотреть</h2>
+    <p class="section-vs-sub">Проверенные источники для профессионального роста.</p>
+    <a class="res-vs reveal-vs" href="https://developer.mozilla.org" target="_blank">MDN Web Docs<small>Главная документация — читать каждый день</small></a>
+    <a class="res-vs reveal-vs" href="https://roadmap.sh/frontend" target="_blank">roadmap.sh / frontend<small>Визуальная карта технологий</small></a>
+    <a class="res-vs reveal-vs" href="https://web.dev" target="_blank">web.dev<small>Core Web Vitals от Google</small></a>
+    <a class="res-vs reveal-vs" href="https://kentcdodds.com" target="_blank">Kent C. Dodds<small>React, Testing, Epic React</small></a>
+    <a class="res-vs reveal-vs" href="https://www.joshwcomeau.com" target="_blank">Josh W. Comeau<small>CSS, React, анимации</small></a>
+  </div>
+</div>
+
+<!-- ═══ DOWNLOAD / PRICING ═══ -->
+<div class="section-vs">
+  <p class="section-vs-label">Get Started</p>
+  <h2>Начни прямо сейчас</h2>
+  <p class="section-vs-sub">Выбери свой путь в профессии. Все материалы бесплатно.</p>
+  <div class="dl-grid">
+    <div class="dl-card reveal-vs">
+      <h3>Junior</h3>
+      <p class="price">Free — для начинающих</p>
+      <ul>
+        <li>Базовая вёрстка</li>
+        <li>JavaScript fundamentals</li>
+        <li>Один фреймворк</li>
+        <li>Пет-проекты</li>
+      </ul>
+      <a href="#resources" class="btn-vs btn-vs-outline">Начать →</a>
+    </div>
+    <div class="dl-card featured reveal-vs">
+      <h3>Middle</h3>
+      <p class="price">Для уверенных разработчиков</p>
+      <ul>
+        <li>Глубокий фреймворк</li>
+        <li>Сборка и тесты</li>
+        <li>SSR / SSG / SPA</li>
+        <li>Performance</li>
+      </ul>
+      <a href="#resources" class="btn-vs btn-vs-primary">Углубиться →</a>
+    </div>
+    <div class="dl-card reveal-vs">
+      <h3>Senior+</h3>
+      <p class="price">Для лидов и архитекторов</p>
+      <ul>
+        <li>Архитектура</li>
+        <li>Team management</li>
+        <li>CI/CD стратегия</li>
+        <li>Бэкенд-смежность</li>
+      </ul>
+      <a href="#resources" class="btn-vs btn-vs-outline">Развиваться →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TESTIMONIAL ═══ -->
+<div class="testimonial-vs">
+  <blockquote>«Фронтенд — единственная область разработки, где твой код видит миллион человек, но замечают только когда он сломан.»</blockquote>
+  <cite>— Из разговора продакта с фронтендером</cite>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="ft-vs">
+  <div class="ft-vs-inner">
+    <div class="ft-vs-top">
+      <div class="ft-vs-col">
+        <h4>Guide</h4>
+        <a href="#features">Capabilities</a>
+        <a href="#stack">Tech Stack</a>
+        <a href="#career">Career Path</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="ft-vs-col">
+        <h4>Resources</h4>
+        <a href="https://developer.mozilla.org" target="_blank">MDN</a>
+        <a href="https://roadmap.sh/frontend" target="_blank">Roadmap</a>
+        <a href="https://web.dev" target="_blank">web.dev</a>
+      </div>
+      <div class="ft-vs-col">
+        <h4>Community</h4>
+        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+        <a href="https://habr.com" target="_blank">Habr</a>
+      </div>
+      <div class="ft-vs-col">
+        <h4>About</h4>
+        <a href="#">Frontend Guide v3.1</a>
+        <a href="#">State of JS 2024</a>
+        <a href="#">Хабр Карьера 2025</a>
+      </div>
+    </div>
+    <div class="ft-vs-bottom">
+      <span>© 2026 Frontend Developer Guide</span>
+      <span>Built with ❤️ for the community</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  /* ─── SCROLL REVEAL ─── */
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal-vs').forEach(function(el) { observer.observe(el); });
+
+  /* ─── THEME TOGGLE ─── */
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  var isDark = false;
+
+  function applyTheme(dark) {
+    isDark = dark;
+    if (dark) {
+      root.style.setProperty('--bg', '#0e0e0e');
+      root.style.setProperty('--bg-alt', '#161616');
+      root.style.setProperty('--bg-card', '#1a1a1a');
+      root.style.setProperty('--fg', '#e0e0e0');
+      root.style.setProperty('--fg-secondary', '#999');
+      root.style.setProperty('--fg-muted', '#666');
+      root.style.setProperty('--accent', '#4da6ff');
+      root.style.setProperty('--accent-hover', '#3385d6');
+      root.style.setProperty('--accent-light', '#1a2a3a');
+      root.style.setProperty('--border', '#2a2a2a');
+      root.style.setProperty('--border-light', '#222');
+      themeBtn.textContent = '☾';
+    } else {
+      root.style.setProperty('--bg', '#ffffff');
+      root.style.setProperty('--bg-alt', '#f5f6f8');
+      root.style.setProperty('--bg-card', '#ffffff');
+      root.style.setProperty('--fg', '#1a1a1a');
+      root.style.setProperty('--fg-secondary', '#5a5a5a');
+      root.style.setProperty('--fg-muted', '#8a8a8a');
+      root.style.setProperty('--accent', '#0066b4');
+      root.style.setProperty('--accent-hover', '#004d8a');
+      root.style.setProperty('--accent-light', '#e6f0fa');
+      root.style.setProperty('--border', '#e0e0e0');
+      root.style.setProperty('--border-light', '#f0f0f0');
+      themeBtn.textContent = '☀';
+    }
+    localStorage.setItem('vs-theme', dark ? 'dark' : 'light');
+  }
+
+  themeBtn.addEventListener('click', function() { applyTheme(!isDark); });
+  var saved = localStorage.getItem('vs-theme');
+  if (saved === 'dark') { applyTheme(true); }
+})();
+</script>
+</body>
+</html>
