@@ -27,6 +27,19 @@
   --col-w: 960px;
 }
 
+[data-theme="dark"] {
+  --bg: #050f1a;
+  --bg-card: rgba(8, 25, 45, 0.5);
+  --fg: #6a8aaa;
+  --fg-dim: #3a5a7a;
+  --fg-bright: #8ab4d4;
+  --edge: #1a5a80;
+  --edge-light: rgba(26, 90, 128, 0.25);
+  --accent: #d49a20;
+  --accent-dim: rgba(212, 154, 32, 0.25);
+  --grid: rgba(26, 90, 128, 0.04);
+}
+
 html { scroll-behavior: smooth; scroll-padding-top: 64px; }
 
 body {
@@ -37,6 +50,8 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* ─── GRID OVERLAY ─── */
@@ -644,6 +659,7 @@ body::before {
     <li><a href="#resources">Ресурсы<small>Что читать</small></a></li>
   </ul>
   <div class="side-blue-footer">
+    <button id="darkBlueBtn" style="width:100%;border:2px dashed var(--edge);background:transparent;color:var(--fg);font-family:inherit;font-size:11px;font-weight:600;padding:10px;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">✦ Тёмная</button>
     <p style="font-size:9px;color:var(--fg-dim);letter-spacing:0.1em;text-transform:uppercase;">Схема v2.4 // 2026</p>
   </div>
 </div>
@@ -889,6 +905,18 @@ body::before {
   overlay.addEventListener('click', closeM);
   document.querySelectorAll('#sideBlue a').forEach(function(a) { a.addEventListener('click', closeM); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && menu.classList.contains('open')) closeM(); });
+
+  var darkBtn = document.getElementById('darkBlueBtn');
+  var html = document.documentElement;
+  function toggleDark() {
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); darkBtn.textContent = '✦ Тёмная'; }
+    else { html.setAttribute('data-theme', 'dark'); darkBtn.textContent = '☀ Светлая'; }
+    localStorage.setItem('blueprint-theme', html.getAttribute('data-theme') || 'light');
+  }
+  darkBtn.addEventListener('click', toggleDark);
+  var saved = localStorage.getItem('blueprint-theme');
+  if (saved === 'dark') { html.setAttribute('data-theme', 'dark'); darkBtn.textContent = '☀ Светлая'; }
 })();
 </script>
 </body>
