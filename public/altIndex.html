@@ -19,6 +19,7 @@
   --accent-light: #e6f0fa;
   --border: #e0e0e0;
   --border-light: #f0f0f0;
+  --nav-bg: rgba(255,255,255,0.96);
   --shadow: 0 2px 12px rgba(0,0,0,0.06);
   --shadow-hover: 0 8px 30px rgba(0,0,0,0.1);
   --radius: 8px;
@@ -42,7 +43,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255,255,255,0.96);
+  background: var(--nav-bg);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(12px);
 }
@@ -1104,13 +1105,14 @@ table tr:last-child td { border-bottom: none; }
       root.style.setProperty('--bg-alt', '#161616');
       root.style.setProperty('--bg-card', '#1a1a1a');
       root.style.setProperty('--fg', '#e0e0e0');
-      root.style.setProperty('--fg-secondary', '#999');
-      root.style.setProperty('--fg-muted', '#666');
+      root.style.setProperty('--fg-secondary', '#bbb');
+      root.style.setProperty('--fg-muted', '#999');
       root.style.setProperty('--accent', '#4da6ff');
       root.style.setProperty('--accent-hover', '#3385d6');
       root.style.setProperty('--accent-light', '#1a2a3a');
-      root.style.setProperty('--border', '#2a2a2a');
-      root.style.setProperty('--border-light', '#222');
+      root.style.setProperty('--border', '#333');
+      root.style.setProperty('--border-light', '#2a2a2a');
+      root.style.setProperty('--nav-bg', 'rgba(14,14,14,0.96)');
       themeBtn.textContent = '☾';
     } else {
       root.style.setProperty('--bg', '#ffffff');
@@ -1124,6 +1126,7 @@ table tr:last-child td { border-bottom: none; }
       root.style.setProperty('--accent-light', '#e6f0fa');
       root.style.setProperty('--border', '#e0e0e0');
       root.style.setProperty('--border-light', '#f0f0f0');
+      root.style.setProperty('--nav-bg', 'rgba(255,255,255,0.96)');
       themeBtn.textContent = '☀';
     }
     localStorage.setItem('vs-theme', dark ? 'dark' : 'light');
